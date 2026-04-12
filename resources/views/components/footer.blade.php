@@ -1,12 +1,23 @@
-<footer class="py-4 bg-light mt-auto">
+<footer class="py-4 bg-black text-light mt-auto border-top">
     <div class="container-fluid px-4">
-        <div class="d-flex align-items-center justify-content-between small">
-            <div class="text-muted">Copyright &copy; Your Website 2023</div>
-            <div>
-                <a href="#">Privacy Policy</a>
-                &middot;
-                <a href="#">Terms &amp; Conditions</a>
+        <div class="d-flex flex-column flex-md-row align-items-center justify-content-between small">
+
+            <!-- IZQUIERDA -->
+            <div class="text-muted mb-2 mb-md-0">
+                © {{ date('Y') }} Condominio San Diego - Todos los derechos reservados
             </div>
+
+            <!-- DERECHA -->
+            <div>
+                <a href="#" class="text-decoration-none text-secondary me-3">
+                    Privacidad
+                </a>
+                <a href="#" class="text-decoration-none text-secondary">
+                    Términos
+                </a>
+            </div>
+
         </div>
     </div>
 </footer>
+

@@ -38,7 +38,7 @@ Route::resources([
 Route::resource('empleados', App\Http\Controllers\EmpleadoController::class);
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
-Route::post('/login', [LoginController::class, 'login']);
+//Route::post('/login', [LoginController::class, 'login']);
 Route::get('/logout', [LogoutController::class, 'logout'])->name('logout');
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 

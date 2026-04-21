@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
@@ -61,6 +60,18 @@
         .form-control {
             border-radius: 0 10px 10px 0 !important;
         }
+
+        .forgot-link {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .forgot-link:hover {
+            color: #00c6ff;
+            text-decoration: underline;
+        }
     </style>
 </head>
 
@@ -111,10 +122,17 @@
                 </div>
 
                 <!-- BOTÓN -->
-                <div class="d-grid">
+                <div class="d-grid mb-3">
                     <button type="submit" class="btn btn-login text-white">
                         Iniciar sesión
                     </button>
+                </div>
+
+                <!-- ¿OLVIDASTE TU CONTRASEÑA? -->
+                <div class="text-center">
+                    <a href="{{ route('password.request') }}" class="forgot-link">
+                        <i class="fas fa-key me-1"></i> ¿Olvidaste tu contraseña?
+                    </a>
                 </div>
 
             </form>
@@ -128,4 +146,3 @@
 
 </body>
 </html>
-

@@ -26,9 +26,16 @@
             <label class="form-label">Correo Electrónico</label>
             <input type="email" name="email" class="form-control" value="{{ old('email') }}" required>
         </div>
+
         <div class="mb-3">
             <label for="password" class="form-label">Contraseña</label>
             <input type="password" name="password" id="password" class="form-control" required>
+            <div class="form-text">Mínimo 8 caracteres, debe incluir mayúsculas, números y símbolos.</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="password_confirmation" class="form-label">Confirmar Contraseña</label>
+            <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" required>
         </div>
 
         <div class="mb-3">

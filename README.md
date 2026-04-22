@@ -8,6 +8,7 @@ composer install
 ```
 
 3. Configurar las variables de entorno tomando la plantilla `.env.example` y clonar a un archivo `.env`
+   configurarlo de preferencia MySql
 4. Cambiar las variables de entorno
 5. Generar la llave
 
@@ -15,7 +16,7 @@ composer install
 php artisan key:generate
 ```
 
-5. Conectar el .env a la base de datos ya sea phpMyAdmin o postgreSQL\
+5. Configurar el .env a la base de datos ya sea MySql o la uses
 
 6. Ejecutar las migraciones
 

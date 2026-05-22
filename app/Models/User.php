@@ -21,10 +21,7 @@ class User extends Authenticatable
         'activo',
     ];
 
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    protected $hidden = ['password', 'remember_token'];
 
     protected function casts(): array
     {
@@ -48,7 +45,7 @@ class User extends Authenticatable
         return $this->belongsTo(Postulante::class);
     }
 
-    /** Bitácora de acciones */
+    /** Registro de acciones en bitácora */
     public function bitacoras()
     {
         return $this->hasMany(Bitacora::class);

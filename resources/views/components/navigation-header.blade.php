@@ -8,7 +8,7 @@
 
     <!-- LOGO -->
     <a class="navbar-brand fw-bold text-uppercase" href="{{ route('panel') }}">
-        🏢 Condominio San Diego
+        🏢 Sistema de Admisión CUP
     </a>
 
     <!-- BUSCADOR (OCULTO) -->

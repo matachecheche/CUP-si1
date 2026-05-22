@@ -12,6 +12,9 @@ class RoleController extends Controller
 {
     use BitacoraTrait;
 
+    // Roles del sistema que NO pueden eliminarse
+    const ROLES_PROTEGIDOS = ['Administrador del Sistema', 'Docente', 'Postulante'];
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -29,10 +32,8 @@ class RoleController extends Controller
 
     public function create()
     {
-        // Agrupar permisos por módulo para facilitar la UI
         $permisos = Permission::all()->groupBy(function ($p) {
-            // La primera palabra es el módulo (ej: "ver usuarios" → "ver")
-            // Usamos la última palabra clave del nombre como agrupador
+            // Agrupa por la última palabra del nombre del permiso (módulo)
             $parts = explode(' ', $p->name);
             return ucfirst(end($parts));
         });
@@ -64,7 +65,7 @@ class RoleController extends Controller
 
     public function edit(Role $role)
     {
-        $permisos    = Permission::all()->groupBy(function ($p) {
+        $permisos = Permission::all()->groupBy(function ($p) {
             $parts = explode(' ', $p->name);
             return ucfirst(end($parts));
         });
@@ -97,8 +98,8 @@ class RoleController extends Controller
 
     public function destroy(Role $role)
     {
-        if ($role->name === 'Administrador') {
-            return back()->withErrors(['No se puede eliminar el rol Administrador.']);
+        if (in_array($role->name, self::ROLES_PROTEGIDOS)) {
+            return back()->withErrors(['No se puede eliminar el rol "' . $role->name . '" porque es un rol base del sistema.']);
         }
         $this->registrarEnBitacora('Rol eliminado: ' . $role->name, $role->id);
         $role->delete();

@@ -3,7 +3,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-// CU-05: Registrar postulantes con validación de requisitos
+// CU-05: Registro de postulantes
 return new class extends Migration {
     public function up(): void {
         Schema::create('postulantes', function (Blueprint $table) {
@@ -17,8 +17,13 @@ return new class extends Migration {
             $table->date('fecha_nacimiento')->nullable();
             $table->string('telefono', 20)->nullable();
             $table->string('email', 100)->nullable();
-            // Estados: inscrito | en_curso | aprobado | no_aprobado | admitido | no_admitido
-            $table->string('estado', 30)->default('inscrito');
+            $table->boolean('doc_ci')->default(false);
+            $table->boolean('doc_libreta_colegio')->default(false);
+            $table->boolean('doc_titulo_bachiller')->default(false);
+            $table->enum('estado', [
+                'inscrito', 'en_curso', 'aprobado', 'no_aprobado',
+                'admitido', 'admitido_segunda_opcion', 'no_admitido',
+            ])->default('inscrito');
             $table->timestamps();
         });
     }

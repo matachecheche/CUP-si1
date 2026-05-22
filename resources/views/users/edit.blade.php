@@ -14,12 +14,13 @@
         <div class="card-header"><i class="fas fa-user-edit me-1"></i> Editar: {{ $user->name }}</div>
         <div class="card-body">
             @if($errors->any())
-                <div class="alert alert-danger"><ul class="mb-0">@foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul></div>
+                <div class="alert alert-danger">
+                    <ul class="mb-0">@foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul>
+                </div>
             @endif
 
             <form action="{{ route('users.update', $user) }}" method="POST">
                 @csrf @method('PUT')
-
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label class="form-label">Nombre *</label>
@@ -30,7 +31,7 @@
                         <input type="email" name="email" class="form-control" value="{{ old('email', $user->email) }}" required>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Nueva contraseña <small class="text-muted">(dejar vacío para no cambiar)</small></label>
+                        <label class="form-label">Nueva contraseña <small class="text-muted">(vacío = no cambiar)</small></label>
                         <input type="password" name="password" class="form-control">
                     </div>
                     <div class="col-md-6">
@@ -42,13 +43,13 @@
                         <select name="role" class="form-select" required>
                             <option value="">— Seleccionar —</option>
                             @foreach($roles as $rol)
-                                <option value="{{ $rol->name }}"
-                                    {{ $user->hasRole($rol->name) ? 'selected' : '' }}>
+                                <option value="{{ $rol->name }}" {{ $user->hasRole($rol->name) ? 'selected' : '' }}>
                                     {{ $rol->name }}
                                 </option>
                             @endforeach
                         </select>
                     </div>
+
                     @if($docentes->count())
                     <div class="col-md-6">
                         <label class="form-label">Docente vinculado</label>
@@ -62,6 +63,7 @@
                         </select>
                     </div>
                     @endif
+
                     @if($postulantes->count())
                     <div class="col-md-6">
                         <label class="form-label">Postulante vinculado</label>
@@ -69,7 +71,7 @@
                             <option value="">— Ninguno —</option>
                             @foreach($postulantes as $p)
                                 <option value="{{ $p->id }}" {{ $user->postulante_id == $p->id ? 'selected' : '' }}>
-                                    {{ $p->nombres }} {{ $p->apellidos }}
+                                    {{ $p->nombres }} {{ $p->apellidos }} — CI: {{ $p->ci }}
                                 </option>
                             @endforeach
                         </select>

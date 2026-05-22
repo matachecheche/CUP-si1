@@ -12,22 +12,36 @@ class UsuariosSeeder extends Seeder
     {
         $pwd = Hash::make('12345678');
 
+        // Un usuario de prueba por rol
         $usuarios = [
-            ['name' => 'admin',         'email' => 'admin@cup.edu.bo',      'rol' => 'Administrador'],
-            ['name' => 'admisiones',    'email' => 'admisiones@cup.edu.bo', 'rol' => 'Responsable de Admisiones'],
-            ['name' => 'docente',       'email' => 'docente@cup.edu.bo',    'rol' => 'Docente'],
-            ['name' => 'autoridad',     'email' => 'autoridad@cup.edu.bo',  'rol' => 'Autoridad de la Facultad'],
+            [
+                'name'  => 'Administrador CUP',
+                'email' => 'admin@cup.edu.bo',
+                'rol'   => 'Administrador del Sistema',
+            ],
+            [
+                'name'  => 'Docente Demo',
+                'email' => 'docente@cup.edu.bo',
+                'rol'   => 'Docente',
+            ],
+            [
+                'name'  => 'Postulante Demo',
+                'email' => 'postulante@cup.edu.bo',
+                'rol'   => 'Postulante',
+            ],
         ];
 
         foreach ($usuarios as $data) {
-            $user = User::create([
-                'name'               => $data['name'],
-                'email'              => $data['email'],
-                'activo'             => true,
-                'email_verified_at'  => now(),
-                'password'           => $pwd,
-            ]);
-            $user->assignRole($data['rol']);
+            $user = User::firstOrCreate(
+                ['email' => $data['email']],
+                [
+                    'name'              => $data['name'],
+                    'activo'            => true,
+                    'email_verified_at' => now(),
+                    'password'          => $pwd,
+                ]
+            );
+            $user->syncRoles([$data['rol']]);
         }
     }
 }

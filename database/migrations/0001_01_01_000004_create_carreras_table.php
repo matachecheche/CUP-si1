@@ -1,20 +1,18 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+// CU-10: Carreras → Informática, Sistemas, Redes y Telecomunicaciones, Robótica
 return new class extends Migration {
     public function up(): void {
-        Schema::create('categoria_inventarios', function (Blueprint $table) {
+        Schema::create('carreras', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
+            $table->string('nombre', 100)->unique();
             $table->text('descripcion')->nullable();
+            $table->boolean('estado')->default(true);
             $table->timestamps();
         });
     }
-
-    public function down(): void {
-        Schema::dropIfExists('categoria_inventarios');
-    }
+    public function down(): void { Schema::dropIfExists('carreras'); }
 };

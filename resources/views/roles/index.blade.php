@@ -20,22 +20,31 @@
     @endcan
 
     <div class="card">
-        <div class="card-header"><i class="fas fa-shield-alt me-1"></i> Listado de Roles</div>
+        <div class="card-header"><i class="fas fa-shield-alt me-1"></i> Roles del Sistema</div>
         <div class="card-body">
             <table id="datatablesSimple" class="table table-striped table-sm">
                 <thead>
-                    <tr><th>Rol</th><th>Permisos</th><th>Acciones</th></tr>
+                    <tr><th>Rol</th><th>Nº Permisos</th><th>Permisos (muestra)</th><th>Acciones</th></tr>
                 </thead>
                 <tbody>
-                    @foreach ($roles as $rol)
+                    @php
+                        $protegidos = ['Administrador del Sistema', 'Docente', 'Postulante'];
+                    @endphp
+                    @foreach($roles as $rol)
                     <tr>
-                        <td><strong>{{ $rol->name }}</strong></td>
                         <td>
-                            @foreach($rol->permissions->take(5) as $p)
+                            <strong>{{ $rol->name }}</strong>
+                            @if(in_array($rol->name, $protegidos))
+                                <span class="badge bg-warning text-dark ms-1" title="Rol base del sistema">base</span>
+                            @endif
+                        </td>
+                        <td><span class="badge bg-info text-dark">{{ $rol->permissions->count() }}</span></td>
+                        <td>
+                            @foreach($rol->permissions->take(4) as $p)
                                 <span class="badge bg-light text-dark border">{{ $p->name }}</span>
                             @endforeach
-                            @if($rol->permissions->count() > 5)
-                                <span class="text-muted small">+ {{ $rol->permissions->count() - 5 }} más</span>
+                            @if($rol->permissions->count() > 4)
+                                <span class="text-muted small">+{{ $rol->permissions->count() - 4 }} más</span>
                             @endif
                         </td>
                         <td>
@@ -46,10 +55,11 @@
                                 </a>
                                 @endcan
                                 @can('eliminar roles')
-                                @if($rol->name !== 'Administrador')
+                                @if(!in_array($rol->name, $protegidos))
                                 <form action="{{ route('roles.destroy', $rol) }}" method="POST" class="d-inline">
                                     @csrf @method('DELETE')
-                                    <button class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar rol?')">
+                                    <button class="btn btn-danger btn-sm"
+                                            onclick="return confirm('¿Eliminar el rol {{ $rol->name }}?')">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>

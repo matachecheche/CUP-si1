@@ -14,12 +14,13 @@
         <div class="card-header"><i class="fas fa-user-plus me-1"></i> Nuevo Usuario</div>
         <div class="card-body">
             @if($errors->any())
-                <div class="alert alert-danger"><ul class="mb-0">@foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul></div>
+                <div class="alert alert-danger">
+                    <ul class="mb-0">@foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul>
+                </div>
             @endif
 
             <form action="{{ route('users.store') }}" method="POST">
                 @csrf
-
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label class="form-label">Nombre completo *</label>
@@ -40,14 +41,20 @@
                     <div class="col-md-6">
                         <label class="form-label">Rol *</label>
                         <select name="role" class="form-select" required>
-                            <option value="">— Seleccionar —</option>
+                            <option value="">— Seleccionar rol —</option>
                             @foreach($roles as $rol)
                                 <option value="{{ $rol->name }}" {{ old('role') == $rol->name ? 'selected' : '' }}>
                                     {{ $rol->name }}
                                 </option>
                             @endforeach
                         </select>
+                        <div class="form-text">
+                            Roles disponibles: <strong>Administrador del Sistema</strong>,
+                            <strong>Docente</strong>, <strong>Postulante</strong>
+                        </div>
                     </div>
+
+                    {{-- Vínculo a Docente (solo si ya existen docentes registrados) --}}
                     @if($docentes->count())
                     <div class="col-md-6">
                         <label class="form-label">Vincular a Docente <small class="text-muted">(opcional)</small></label>
@@ -61,6 +68,8 @@
                         </select>
                     </div>
                     @endif
+
+                    {{-- Vínculo a Postulante (solo si ya existen postulantes registrados) --}}
                     @if($postulantes->count())
                     <div class="col-md-6">
                         <label class="form-label">Vincular a Postulante <small class="text-muted">(opcional)</small></label>
@@ -68,7 +77,7 @@
                             <option value="">— Ninguno —</option>
                             @foreach($postulantes as $p)
                                 <option value="{{ $p->id }}" {{ old('postulante_id') == $p->id ? 'selected' : '' }}>
-                                    {{ $p->nombres }} {{ $p->apellidos }} ({{ $p->ci }})
+                                    {{ $p->nombres }} {{ $p->apellidos }} — CI: {{ $p->ci }}
                                 </option>
                             @endforeach
                         </select>

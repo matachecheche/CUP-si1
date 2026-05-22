@@ -24,20 +24,24 @@
                     <input type="text" name="name" class="form-control w-50" value="{{ old('name') }}" required>
                 </div>
 
-                <label class="form-label fw-bold">Permisos *</label>
+                <label class="form-label fw-bold">Permisos * <small class="text-muted fw-normal">(selecciona al menos uno)</small></label>
                 @foreach($permisos as $modulo => $lista)
                 <div class="card mb-2">
-                    <div class="card-header py-1 bg-light fw-semibold small">{{ $modulo }}</div>
+                    <div class="card-header py-1 bg-light fw-semibold small d-flex justify-content-between align-items-center">
+                        <span>{{ $modulo }}</span>
+                        <button type="button" class="btn btn-xs btn-outline-secondary btn-sm py-0 px-1"
+                                onclick="toggleModulo('{{ Str::slug($modulo) }}')">Sel/Des todo</button>
+                    </div>
                     <div class="card-body py-2">
-                        <div class="row">
+                        <div class="row" id="mod-{{ Str::slug($modulo) }}">
                             @foreach($lista as $permiso)
-                            <div class="col-md-3 col-sm-4">
+                            <div class="col-md-3 col-sm-4 col-6">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox"
                                            name="permission[]" value="{{ $permiso->id }}"
-                                           id="perm_{{ $permiso->id }}"
+                                           id="p{{ $permiso->id }}"
                                            {{ in_array($permiso->id, old('permission', [])) ? 'checked' : '' }}>
-                                    <label class="form-check-label small" for="perm_{{ $permiso->id }}">
+                                    <label class="form-check-label small" for="p{{ $permiso->id }}">
                                         {{ $permiso->name }}
                                     </label>
                                 </div>
@@ -56,4 +60,13 @@
         </div>
     </div>
 </div>
+
+<script>
+function toggleModulo(id) {
+    const mod = document.getElementById('mod-' + id);
+    const checks = mod.querySelectorAll('input[type="checkbox"]');
+    const allChecked = Array.from(checks).every(c => c.checked);
+    checks.forEach(c => c.checked = !allChecked);
+}
+</script>
 @endsection

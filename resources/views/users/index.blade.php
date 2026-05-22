@@ -1,5 +1,4 @@
 @extends('layouts.ap')
-
 @section('title', 'Usuarios — Admisión CUP')
 
 @push('css')
@@ -9,9 +8,9 @@
 @section('content')
 @include('layouts.partials.alert')
 
-@if (session('success'))
+@if(session('success'))
 <script>
-    Swal.mixin({ toast:true, position:'top-end', showConfirmButton:false, timer:2000, timerProgressBar:true })
+    Swal.mixin({ toast:true, position:'top-end', showConfirmButton:false, timer:2500, timerProgressBar:true })
         .fire({ icon:'success', title:"{{ session('success') }}" });
 </script>
 @endif
@@ -26,7 +25,7 @@
     @can('crear usuarios')
     <div class="mb-3">
         <a href="{{ route('users.create') }}" class="btn btn-primary btn-sm">
-            <i class="fas fa-plus me-1"></i> Nuevo Usuario
+            <i class="fas fa-user-plus me-1"></i> Nuevo Usuario
         </a>
     </div>
     @endcan
@@ -37,36 +36,38 @@
             <table id="datatablesSimple" class="table table-striped table-sm">
                 <thead>
                     <tr>
-                        <th>#</th>
-                        <th>Nombre</th>
-                        <th>Email</th>
-                        <th>Rol</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
+                        <th>#</th><th>Nombre</th><th>Email</th>
+                        <th>Rol</th><th>Estado</th><th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($users as $user)
+                    @foreach($users as $user)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
                         <td>
                             @foreach($user->getRoleNames() as $rol)
-                                <span class="badge bg-info text-dark">{{ $rol }}</span>
+                                @php
+                                    $color = match($rol) {
+                                        'Administrador del Sistema' => 'danger',
+                                        'Docente'                   => 'primary',
+                                        'Postulante'                => 'success',
+                                        default                     => 'secondary',
+                                    };
+                                @endphp
+                                <span class="badge bg-{{ $color }}">{{ $rol }}</span>
                             @endforeach
                         </td>
                         <td>
-                            @if($user->activo)
-                                <span class="badge bg-success">Activo</span>
-                            @else
-                                <span class="badge bg-secondary">Inactivo</span>
-                            @endif
+                            <span class="badge {{ $user->activo ? 'bg-success' : 'bg-secondary' }}">
+                                {{ $user->activo ? 'Activo' : 'Inactivo' }}
+                            </span>
                         </td>
                         <td>
                             <div class="btn-group btn-group-sm">
                                 @can('editar usuarios')
-                                <a href="{{ route('users.edit', $user) }}" class="btn btn-warning btn-sm">
+                                <a href="{{ route('users.edit', $user) }}" class="btn btn-warning btn-sm" title="Editar">
                                     <i class="fas fa-edit"></i>
                                 </a>
                                 @endcan
@@ -74,6 +75,7 @@
                                 <form action="{{ route('users.destroy', $user) }}" method="POST" class="d-inline">
                                     @csrf @method('DELETE')
                                     <button class="btn btn-sm {{ $user->activo ? 'btn-danger' : 'btn-success' }}"
+                                            title="{{ $user->activo ? 'Desactivar' : 'Activar' }}"
                                             onclick="return confirm('¿Confirmar cambio de estado?')">
                                         <i class="fas fa-{{ $user->activo ? 'ban' : 'check' }}"></i>
                                     </button>

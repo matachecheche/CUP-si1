@@ -4,7 +4,7 @@
 
             <!-- IZQUIERDA -->
             <div class="text-muted mb-2 mb-md-0">
-                © {{ date('Y') }} Condominio San Diego - Todos los derechos reservados
+                © {{ date('Y') }} Sistema de Admisión CUP - Todos los derechos reservados
             </div>
 
             <!-- DERECHA -->

@@ -12,57 +12,71 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Models\Bitacora;
 
-// ── Recuperación de contraseña ────────────────────────────────────────────────
+// ── Recuperación de contraseña (CU-03) ────────────────────────────────────────
 Route::get('password/reset',          [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
 Route::post('password/email',         [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 Route::get('password/reset/{token}',  [ResetPasswordController::class,  'showResetForm'])->name('password.reset');
 Route::post('password/reset',         [ResetPasswordController::class,  'reset'])->name('password.update');
 
-// ── Autenticación ─────────────────────────────────────────────────────────────
+// ── Autenticación (CU-01, CU-02) ─────────────────────────────────────────────
 Route::get('/login',  [LoginController::class,  'index'])->name('login');
 Route::post('/login', [LoginController::class,  'login']);
 Route::get('/logout', [LogoutController::class, 'logout'])->name('logout');
 
-// ── Panel principal ───────────────────────────────────────────────────────────
+// ── Rutas protegidas ─────────────────────────────────────────────────────────
 Route::middleware('auth')->group(function () {
-    Route::get('/',       [HomeController::class, 'index'])->name('panel');
-    Route::get('/panel',  [HomeController::class, 'index']);
+
+    // Panel principal (redirige según rol)
+    Route::get('/',      [HomeController::class, 'index'])->name('panel');
+    Route::get('/panel', [HomeController::class, 'index']);
 
     // Perfil propio
     Route::get('/perfil', [UsuarioController::class, 'miPerfil'])->name('users.perfil');
 
-    // ── MÓDULO DE SEGURIDAD (ya implementado) ─────────────────────────────────
-    Route::resource('users',  UsuarioController::class);
-    Route::resource('roles',  RoleController::class);
+    // ── MÓDULO SEGURIDAD — Implementado ──────────────────────────────────────
+    Route::resource('users',    UsuarioController::class);
+    Route::resource('roles',    RoleController::class);
     Route::resource('bitacora', BitacoraController::class)->only(['index']);
 
-    // ── MÓDULO ACADÉMICO (implementar en próximos ciclos) ─────────────────────
+    // ── MÓDULO GESTIÓN ACADÉMICA (CU-10 a CU-13) ─────────────────────────────
     // Route::resource('gestiones', GestionController::class);
     // Route::resource('carreras',  CarreraController::class);
     // Route::resource('materias',  MateriaController::class);
-    // Route::resource('cupos',     CupoCarreraController::class);
+    // Route::post('carreras/{carrera}/cupos', [CarreraController::class, 'definirCupo'])->name('carreras.cupos');
 
-    // ── MÓDULO DE DOCENTES ────────────────────────────────────────────────────
+    // ── MÓDULO DOCENTES (CU-14 a CU-16) ──────────────────────────────────────
     // Route::resource('docentes', DocenteController::class);
 
-    // ── MÓDULO DE POSTULANTES ─────────────────────────────────────────────────
+    // ── MÓDULO POSTULANTES (CU-05 a CU-09) ───────────────────────────────────
     // Route::resource('postulantes', PostulanteController::class);
+    // Route::post('postulantes/{postulante}/validar', [PostulanteController::class, 'validarRequisitos'])->name('postulantes.validar');
 
-    // ── MÓDULO DE GRUPOS / AULAS ──────────────────────────────────────────────
+    // ── MÓDULO GRUPOS / AULAS (CU-17 a CU-21) ────────────────────────────────
     // Route::resource('grupos', GrupoController::class);
     // Route::post('/grupos/generar', [GrupoController::class, 'generarAutomatico'])->name('grupos.generar');
+    // Route::post('/grupos/{grupo}/asignar-docente', [GrupoController::class, 'asignarDocente'])->name('grupos.asignarDocente');
+    // Route::post('/grupos/{grupo}/inscribir', [GrupoController::class, 'inscribirPostulantes'])->name('grupos.inscribir');
 
-    // ── MÓDULO DE HORARIOS ────────────────────────────────────────────────────
+    // ── MÓDULO HORARIOS (CU-19, CU-20) ───────────────────────────────────────
     // Route::resource('horarios', HorarioController::class);
 
-    // ── MÓDULO DE EVALUACIÓN ──────────────────────────────────────────────────
+    // ── MÓDULO EVALUACIÓN / NOTAS (CU-22 a CU-26) ────────────────────────────
     // Route::resource('notas', NotaController::class);
+    // Route::get('mis-notas', [NotaController::class, 'misNotas'])->name('notas.propias');
 
-    // ── MÓDULO DE ADMISIÓN ────────────────────────────────────────────────────
-    // Route::resource('admision', AdmisionController::class);
+    // ── MÓDULO ADMISIÓN (CU-27 a CU-29) ──────────────────────────────────────
+    // Route::get('admision',                  [AdmisionController::class, 'index'])->name('admision.index');
+    // Route::post('admision/procesar',        [AdmisionController::class, 'procesar'])->name('admision.procesar');
+    // Route::post('admision/reasignar',       [AdmisionController::class, 'reasignar'])->name('admision.reasignar');
+    // Route::post('admision/publicar',        [AdmisionController::class, 'publicar'])->name('admision.publicar');
+    // Route::get('mi-resultado',              [AdmisionController::class, 'miResultado'])->name('admision.resultado-propio');
 
-    // ── REPORTES ──────────────────────────────────────────────────────────────
-    // Route::get('/reportes', [ReporteController::class, 'index'])->name('reportes.index');
+    // ── MÓDULO REPORTES (CU-30 a CU-33) ──────────────────────────────────────
+    // Route::get('reportes',                  [ReporteController::class, 'index'])->name('reportes.index');
+    // Route::get('reportes/grupos',           [ReporteController::class, 'porGrupo'])->name('reportes.grupos');
+    // Route::get('reportes/admitidos',        [ReporteController::class, 'admitidos'])->name('reportes.admitidos');
+    // Route::get('reportes/historico',        [ReporteController::class, 'historico'])->name('reportes.historico');
+    // Route::get('reportes/estadisticas',     [ReporteController::class, 'estadisticas'])->name('reportes.estadisticas');
 });
 
 // ── Bitácora: cierre de página (sendBeacon) ───────────────────────────────────

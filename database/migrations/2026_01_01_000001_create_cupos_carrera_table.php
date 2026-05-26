@@ -3,7 +3,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-// CU-11: Cupos por carrera y gestión
+/** CU-11: Definir cupos por carrera y gestión */
 return new class extends Migration {
     public function up(): void {
         Schema::create('cupos_carrera', function (Blueprint $table) {

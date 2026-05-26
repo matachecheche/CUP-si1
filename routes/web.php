@@ -1,6 +1,6 @@
 <?php
 use App\Http\Controllers\Auth\{ForgotPasswordController,ResetPasswordController};
-use App\Http\Controllers\{BitacoraController,CarreraController,DocenteController,GestionController,HomeController,LoginController,LogoutController,MateriaController,PostulanteController,RoleController,UsuarioController};
+use App\Http\Controllers\{AdmisionController,BitacoraController,CarreraController,DocenteController,GestionController,GrupoController,HomeController,LoginController,LogoutController,MateriaController,NotaController,PostulanteController,RoleController,UsuarioController};
 use Illuminate\Support\Facades\{Auth,DB,Route};
 
 // Recuperación de contraseña
@@ -36,12 +36,17 @@ Route::middleware('auth')->group(function () {
     // Módulo 4: Asignación de Grupos y Docentes (CU-14 a CU-16)
     Route::resource('docentes', DocenteController::class);
 
-    // Módulo 5: Exámenes y Control Académico (Ciclo 2)
-    // Route::resource('notas', NotaController::class);
+    // Módulo 5: Exámenes y Control Académico (CU-22 a CU-26)
+    Route::resource('notas', NotaController::class)->except(['destroy']);
 
-    // Módulo 6: Panel Administrativo y Reportes (Ciclo 2)
-    // Route::get('admision', ...)->name('admision.index');
-    // Route::get('reportes', ...)->name('reportes.index');
+    // Módulo 6: Panel Administrativo y Reportes (CU-17 a CU-21, CU-27 a CU-29)
+    Route::resource('grupos', GrupoController::class);
+    Route::post('grupos/generar-automatico',          [GrupoController::class,'generar'])->name('grupos.generar');
+    Route::post('grupos/{grupo}/asignar-docente',    [GrupoController::class,'asignarDocente'])->name('grupos.asignarDocente');
+    Route::post('grupos/{grupo}/inscribir',          [GrupoController::class,'inscribirPostulantes'])->name('grupos.inscribirPostulantes');
+    Route::get( 'admision',        [AdmisionController::class,'index'])->name('admision.index');
+    Route::post('admision/procesar',[AdmisionController::class,'procesar'])->name('admision.procesar');
+    Route::post('admision/publicar',[AdmisionController::class,'publicar'])->name('admision.publicar');
 });
 
 // Bitácora: cierre de pestaña

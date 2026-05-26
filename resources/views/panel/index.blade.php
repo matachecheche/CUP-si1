@@ -104,9 +104,12 @@
       <div class="cr2x lnk"><a href="{{ route('docentes.index') }}"><span class="ctg dn">CU-15</span><i class="ci2 fas fa-user-check"></i>Validar perfil profesional del docente</a></div>
       <div class="cr2x lnk"><a href="{{ route('docentes.index') }}"><span class="ctg dn">CU-16</span><i class="ci2 fas fa-clock"></i>Consultar carga horaria del docente</a></div>
       @endcan
-      @foreach(['CU-17'=>'Calcular y generar grupos automáticamente','CU-18'=>'Asignar docente a grupo y materia','CU-19'=>'Validar cruces de horario','CU-20'=>'Asignar horarios y modalidad','CU-21'=>'Inscribir postulantes a grupos'] as $c=>$d)
-      <div class="cr2x dis"><span class="ctg pn">{{ $c }}</span><i class="ci2 fas fa-clock"></i>{{ $d }}<span class="cpl">Ciclo 2</span></div>
-      @endforeach
+      @can('ver grupos')
+      <div class="cr2x lnk"><a href="{{ route('grupos.index') }}"><span class="ctg dn">CU-17</span><i class="ci2 fas fa-magic"></i>Generar grupos automáticamente</a></div>
+      <div class="cr2x lnk"><a href="{{ route('grupos.index') }}"><span class="ctg dn">CU-18</span><i class="ci2 fas fa-user-tie"></i>Asignar docente a grupo y materia</a></div>
+      <div class="cr2x lnk"><a href="{{ route('grupos.index') }}"><span class="ctg dn">CU-19</span><i class="ci2 fas fa-exclamation-triangle"></i>Validar cruces de horario</a></div>
+      <div class="cr2x lnk"><a href="{{ route('grupos.index') }}"><span class="ctg dn">CU-21</span><i class="ci2 fas fa-users"></i>Inscribir postulantes a grupos</a></div>
+      @endcan
     </div>
   </div>
 
@@ -114,9 +117,11 @@
   <div class="mc m5">
     <div class="mh"><div class="mn2">5</div>Módulo de Exámenes y Control Académico</div>
     <div class="mb2">
-      @foreach(['CU-22'=>'Registrar notas de exámenes (3 por materia)','CU-23'=>'Calcular nota final (30%+30%+40%)','CU-24'=>'Calcular promedio general','CU-25'=>'Determinar aprobado/reprobado ≥60','CU-26'=>'Consultar notas del postulante'] as $c=>$d)
-      <div class="cr2x dis"><span class="ctg pn">{{ $c }}</span><i class="ci2 fas fa-clock"></i>{{ $d }}<span class="cpl">Ciclo 2</span></div>
-      @endforeach
+      @can('ver notas')
+      <div class="cr2x lnk"><a href="{{ route('notas.index') }}"><span class="ctg dn">CU-22</span><i class="ci2 fas fa-pencil-alt"></i>Registrar notas de exámenes</a></div>
+      <div class="cr2x lnk"><a href="{{ route('notas.index') }}"><span class="ctg dn">CU-23/24/25</span><i class="ci2 fas fa-calculator"></i>Nota final · Promedio · Estado</a></div>
+      <div class="cr2x lnk"><a href="{{ route('notas.index') }}"><span class="ctg dn">CU-26</span><i class="ci2 fas fa-search"></i>Consultar notas del postulante</a></div>
+      @endcan
     </div>
   </div>
 
@@ -124,9 +129,12 @@
   <div class="mc m1" style="border-top-color:#10b981">
     <div class="mh"><div class="mn2" style="background:#d1fae5;color:#065f46">6</div>Módulo de Panel Administrativo y Reportes</div>
     <div class="mb2">
-      @foreach(['CU-27'=>'Procesar admisión por primera opción','CU-28'=>'Reasignar a segunda opción','CU-29'=>'Publicar resultado final','CU-30'=>'Reporte aprobados/reprobados por grupo','CU-31'=>'Reporte admitidos por carrera','CU-32'=>'Comparativo histórico entre gestiones','CU-33'=>'Indicadores estadísticos del proceso'] as $c=>$d)
-      <div class="cr2x dis"><span class="ctg pn">{{ $c }}</span><i class="ci2 fas fa-clock"></i>{{ $d }}<span class="cpl">Ciclo 2</span></div>
-      @endforeach
+      @can('procesar admision')
+      <div class="cr2x lnk"><a href="{{ route('admision.index') }}"><span class="ctg dn">CU-27</span><i class="ci2 fas fa-cogs"></i>Procesar admisión por primera opción</a></div>
+      <div class="cr2x lnk"><a href="{{ route('admision.index') }}"><span class="ctg dn">CU-28</span><i class="ci2 fas fa-exchange-alt"></i>Reasignar a segunda opción</a></div>
+      <div class="cr2x lnk"><a href="{{ route('admision.index') }}"><span class="ctg dn">CU-29</span><i class="ci2 fas fa-bullhorn"></i>Publicar resultado final</a></div>
+      @endcan
+      <div class="cr2x dis"><span class="ctg pn">CU-30..33</span><i class="ci2 fas fa-chart-bar"></i>Reportes y estadísticas<span class="cpl">Próximamente</span></div>
     </div>
   </div>
 </div>

@@ -37,9 +37,9 @@ RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs
 RUN npm install
 RUN npm run build
 
-# 9. Script de arranque para asegurar la ejecución de migraciones en cada despliegue
+# 9. Script de arranque para limpiar, migrar y poblar la base de datos automáticamente
 RUN echo '#!/bin/sh\n\
-php artisan migrate --force\n\
+php artisan migrate:fresh --seed --force\n\
 apachectl -D FOREGROUND' > /usr/local/bin/start.sh
 
 RUN chmod +x /usr/local/bin/start.sh

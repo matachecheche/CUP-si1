@@ -1,34 +1,60 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="csrf-token" content="{{ csrf_token() }}">
-<title>@yield('title','CUP') — Admisión CUP</title>
-<link href="{{ asset('css/cup.css') }}" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-@stack('css')
-</head>
-<body>
-<header class="cup-top">
-  <button class="tgl" id="sbTgl"><i class="fas fa-bars"></i></button>
-  <a href="{{ route('panel') }}" class="brand">
-    <div class="bico">C</div>
-    <span>Admisión <span style="color:var(--o)">CUP</span></span>
-  </a>
-  <div class="top-r">
-    <div class="top-usr" id="usrDd" onclick="this.classList.toggle('open')">
-      <div class="av">{{ strtoupper(substr(Auth::user()->name??'U',0,1)) }}</div>
-      <span style="display:none" class="d-sm">{{ Auth::user()->name??'Usuario' }}</span>
-      <i class="fas fa-chevron-down" style="font-size:.6rem;opacity:.6;margin-left:.25rem"></i>
-      <div class="umenu">
-        <a href="{{ route('users.perfil') }}"><i class="fas fa-user-circle"></i> Mi perfil</a>
-        <div class="sep"></div>
-        <a href="{{ route('logout') }}" class="dng"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
-      </div>
-    </div>
-  </div>
-</header>
+# Plan — Sidebar espejo del dashboard (mismos CU por módulo)
 
+> **Para Claude Code Desktop.** Repo `CUP-si1`, rama `feature/mejiav2` (commit base `b83da50`).
+> Stack: **Laravel 11 + AdminLTE 3 + Blade + Spatie Permission + PostgreSQL**.
+> El **dashboard ya está correcto** (todos los CU visibles con "Sin acceso"/"Próximamente"). **Solo hay que arreglar el SIDEBAR.**
+
+---
+
+## Problema
+
+El sidebar (`resources/views/layouts/ap.blade.php`) **no lista los mismos casos de uso** que cada módulo del dashboard (`resources/views/panel/index.blade.php`).
+
+Ejemplo del Módulo 1: el sidebar muestra *Panel de Control, Gestión de Usuarios, Roles y Permisos, Bitácora*, pero **faltan CU-01 (Iniciar sesión), CU-02 (Cerrar sesión) y CU-03 (Recuperar contraseña)**.
+
+## Objetivo
+
+Reescribir el `<nav class="cup-sb">` para que **cada módulo del sidebar contenga exactamente los mismos CU que el mismo módulo del dashboard**, en el mismo orden, con su código CU, su ruta, su mismo `@can` y su estado "Sin acceso"/"Próximamente". Misma cantidad de ítems que el dashboard, 1:1.
+
+Sin CSS nuevo: se reutilizan las clases existentes `ni`, `ico`, `ni pnd`, `nbg`.
+
+---
+
+## Mapa CU → sidebar (debe quedar idéntico al dashboard)
+
+| Módulo | CU | Texto | Ruta | Gate |
+|---|---|---|---|---|
+| 1 | — | Panel de Control | `panel` | (siempre) |
+| 1 | CU-01 | Iniciar sesión | `login` | público |
+| 1 | CU-02 | Cerrar sesión | `logout` | público |
+| 1 | CU-03 | Recuperar contraseña | `password.request` | público |
+| 1 | CU-04 | Gestionar usuarios y roles | `users.index` | `ver usuarios` |
+| 2 | CU-05 | Gestionar postulantes | `postulantes.index` | `ver postulantes` |
+| 2 | CU-06 | Gestionar gestiones académicas | `gestiones.index` | `ver gestiones` |
+| 2 | CU-07 | Gestionar carreras de la facultad | `carreras.index` | `ver carreras` |
+| 2 | CU-08 | Definir cupos por carrera y gestión | `cupos.index` | `ver cupos` |
+| 2 | CU-09 | Gestionar materias del CUP | `materias.index` | `ver materias` |
+| 2 | CU-20 | Gestionar pasarela de pago | — | Próximamente |
+| 3 | CU-10 | Gestionar docentes | `docentes.index` | `ver docentes` |
+| 3 | CU-11 | Gestionar grupos | `grupos.index` | `ver grupos` |
+| 3 | CU-12 | Asignar docente a grupos y materias | `grupos.index` | `ver grupos` |
+| 4 | CU-13 | Registrar notas de exámenes | `notas.index` | `ver notas` |
+| 4 | CU-14 | Calcular nota final, promedio y estado | `notas.index` | `ver notas` |
+| 4 | CU-15 | Consultar notas del postulante | `notas.index` | `ver notas` |
+| 5 | CU-16 | Procesar admisión por primera opción | `admision.index` | `procesar admision` |
+| 5 | CU-17 | Reasignar postulantes a segunda opción | `admision.index` | `procesar admision` |
+| 5 | CU-18 | Publicar resultado final de admisión | `admision.index` | `publicar admision` |
+| 5 | CU-19 | Gestionar reportes y estadísticas | — | Próximamente |
+
+> Nota: *Roles y Permisos* (`roles.index`) y *Bitácora* (`bitacora.index`) NO son CU del dashboard, pero se conservan como **accesos rápidos al final del Módulo 1** (después de CU-04), cada uno con su `@can` y su estado "Sin acceso".
+
+---
+
+## Acción única
+
+Reemplazar **todo** el bloque `<nav class="cup-sb" id="cupSb"> ... </nav>` de `resources/views/layouts/ap.blade.php` por el siguiente (conserva el header `<header class="cup-top">` y el `<script>` del final tal como están):
+
+```blade
 <nav class="cup-sb" id="cupSb">
   <div class="sb-usr">
     <div class="av">{{ strtoupper(substr(Auth::user()->name??'U',0,1)) }}</div>
@@ -55,6 +81,7 @@
     @else
     <span class="ni pnd"><i class="ico fas fa-users-cog"></i>CU-04 · Gestionar usuarios y roles<span class="nbg">Sin acceso</span></span>
     @endcan
+    {{-- Accesos rápidos (no son CU del dashboard) --}}
     @can('ver roles')
     <a class="ni {{ request()->routeIs('roles.*') ? 'act':'' }}" href="{{ route('roles.index') }}">
       <i class="ico fas fa-user-shield"></i>Roles y Permisos</a>
@@ -172,28 +199,32 @@
     <a class="ni lgt" href="{{ route('logout') }}"><i class="ico fas fa-sign-out-alt"></i>Cerrar sesión</a>
   </div>
 </nav>
+```
 
-<div class="cup-mn" id="cupMn">
-  <div class="cup-cnt">
-    @include('layouts.partials.alert')
-    @yield('content')
-  </div>
-  <footer class="cup-ft">
-    <span>© {{ date('Y') }} Sistema de Admisión CUP — FICCT</span>
-    <span>Facultad de Ingeniería en Ciencias de la Computación y Telecomunicaciones</span>
-  </footer>
-</div>
+---
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
-<script>
-const sb=document.getElementById('cupSb'),mn=document.getElementById('cupMn'),tg=document.getElementById('sbTgl');
-let col=window.innerWidth<769;
-function apl(){if(col){sb.classList.remove('open');if(window.innerWidth>=769){sb.classList.add('collapsed');mn.classList.add('exp')}else{sb.classList.remove('collapsed');mn.classList.remove('exp')}}else{sb.classList.add('open');sb.classList.remove('collapsed');mn.classList.remove('exp')}}
-apl();tg.addEventListener('click',()=>{col=!col;apl()});
-window.addEventListener('resize',()=>{col=window.innerWidth<769;apl()});
-document.addEventListener('click',e=>{const d=document.getElementById('usrDd');if(d&&!d.contains(e.target))d.classList.remove('open')});
-window.addEventListener('beforeunload',()=>navigator.sendBeacon('{{ route("bitacora.page-close") }}',new URLSearchParams({_token:'{{ csrf_token() }}'})));
-</script>
-@stack('js')
-</body>
-</html>
+## Verificación
+
+Probar con los 3 usuarios sembrados (password `12345678`): `admin@cup.edu.bo`, `docente@cup.edu.bo`, `postulante@cup.edu.bo`.
+
+- [ ] Cada módulo del **sidebar** muestra **exactamente los mismos CU** (mismos códigos y mismo orden) que el módulo correspondiente del **dashboard**.
+- [ ] Módulo 1 del sidebar ya incluye CU-01, CU-02, CU-03 y CU-04.
+- [ ] Al final del Módulo 1 aparecen *Roles y Permisos* y *Bitácora* como accesos rápidos (con "Sin acceso" si el rol no tiene permiso).
+- [ ] Los CU sin permiso aparecen como "Sin acceso" (no desaparecen). CU-19 y CU-20 como "Próximamente".
+- [ ] **Admin:** todos activos salvo Próximamente. **Docente:** activos Grupos y Notas (+postulantes si el rol lo tiene); resto "Sin acceso". **Postulante:** casi todo "Sin acceso".
+- [ ] Cada enlace activo navega a su ruta sin error (HTTP 200).
+- [ ] No se agregó CSS nuevo.
+
+Comandos:
+```bash
+npm run dev        # o npm run build
+php artisan serve  # :8002
+./vendor/bin/pint
+```
+
+## Pasos para Claude Code
+1. Abrir `resources/views/layouts/ap.blade.php`.
+2. Reemplazar el bloque `<nav class="cup-sb" id="cupSb"> ... </nav>` completo por el de arriba.
+3. Dejar intactos el `<header>` y el `<script>`.
+4. Levantar la app y validar la lista con los 3 usuarios.
+5. `./vendor/bin/pint` y reportar.

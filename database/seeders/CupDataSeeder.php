@@ -34,16 +34,16 @@ class CupDataSeeder extends Seeder
 
         // ── 3. MATERIAS ──────────────────────────────────────────────────────
         DB::table('materias')->insertOrIgnore([
-            ['nombre'=>'Computación', 'area_formacion'=>'Computación / Informática','pond_examen1'=>30,'pond_examen2'=>30,'pond_examen3'=>40,'nota_minima_aprobacion'=>60,'orden'=>1,'estado'=>true,'created_at'=>now(),'updated_at'=>now()],
-            ['nombre'=>'Matemáticas', 'area_formacion'=>'Matemáticas',              'pond_examen1'=>30,'pond_examen2'=>30,'pond_examen3'=>40,'nota_minima_aprobacion'=>60,'orden'=>2,'estado'=>true,'created_at'=>now(),'updated_at'=>now()],
-            ['nombre'=>'Física',      'area_formacion'=>'Física',                   'pond_examen1'=>30,'pond_examen2'=>30,'pond_examen3'=>40,'nota_minima_aprobacion'=>60,'orden'=>3,'estado'=>true,'created_at'=>now(),'updated_at'=>now()],
-            ['nombre'=>'Inglés',      'area_formacion'=>'Inglés / Idiomas',         'pond_examen1'=>30,'pond_examen2'=>30,'pond_examen3'=>40,'nota_minima_aprobacion'=>60,'orden'=>4,'estado'=>true,'created_at'=>now(),'updated_at'=>now()],
+            ['nombre'=>'Computación', 'area_formacion'=>'Computación','pond_examen1'=>30,'pond_examen2'=>30,'pond_examen3'=>40,'nota_minima_aprobacion'=>60,'orden'=>1,'estado'=>true,'created_at'=>now(),'updated_at'=>now()],
+            ['nombre'=>'Matemáticas', 'area_formacion'=>'Matemáticas','pond_examen1'=>30,'pond_examen2'=>30,'pond_examen3'=>40,'nota_minima_aprobacion'=>60,'orden'=>2,'estado'=>true,'created_at'=>now(),'updated_at'=>now()],
+            ['nombre'=>'Física',      'area_formacion'=>'Física',     'pond_examen1'=>30,'pond_examen2'=>30,'pond_examen3'=>40,'nota_minima_aprobacion'=>60,'orden'=>3,'estado'=>true,'created_at'=>now(),'updated_at'=>now()],
+            ['nombre'=>'Inglés',      'area_formacion'=>'Inglés',     'pond_examen1'=>30,'pond_examen2'=>30,'pond_examen3'=>40,'nota_minima_aprobacion'=>60,'orden'=>4,'estado'=>true,'created_at'=>now(),'updated_at'=>now()],
         ]);
 
         $carreras = DB::table('carreras')->get();
         $materias = DB::table('materias')->get();
 
-        // ── 4. CUPOS POR CARRERA Y GESTIÓN (CU-11) ──────────────────────────
+        // ── 4. CUPOS POR CARRERA Y GESTIÓN (CU-08) ──────────────────────────
         $cuposPorSigla = ['INF'=>80,'SIS'=>75,'RYT'=>60,'ROB'=>50];
         $gestiones = DB::table('gestiones')->get();
         foreach ($gestiones as $g) {
@@ -56,17 +56,17 @@ class CupDataSeeder extends Seeder
             }
         }
 
-        // ── 5. DOCENTES (CU-14 / CU-15) ─────────────────────────────────────
+        // ── 5. DOCENTES (CU-10) ─────────────────────────────────────────────
         $docentesData = [
-            ['ci'=>'4512378','nombres'=>'Roberto','apellidos'=>'Mamani Flores',   'telefono'=>'71234501','email'=>'rmamani@ficct.edu.bo',  'titulo_profesional'=>'Ing. en Informática',              'maestria'=>'Maestría en Ingeniería de Software',            'diplomado_educacion_superior'=>'Diplomado en Docencia Universitaria','certificacion_ingles'=>'B2','area_formacion'=>'Computación / Informática'],
+            ['ci'=>'4512378','nombres'=>'Roberto','apellidos'=>'Mamani Flores',   'telefono'=>'71234501','email'=>'rmamani@ficct.edu.bo',  'titulo_profesional'=>'Ing. en Informática',              'maestria'=>'Maestría en Ingeniería de Software',            'diplomado_educacion_superior'=>'Diplomado en Docencia Universitaria','certificacion_ingles'=>'B2','area_formacion'=>'Computación'],
             ['ci'=>'5623489','nombres'=>'Carla',   'apellidos'=>'Quispe Vargas',   'telefono'=>'72345602','email'=>'cquispe@ficct.edu.bo',   'titulo_profesional'=>'Lic. en Matemáticas',              'maestria'=>'Maestría en Docencia Universitaria',            'diplomado_educacion_superior'=>'Diplomado en Educación Superior',    'certificacion_ingles'=>null,'area_formacion'=>'Matemáticas'],
             ['ci'=>'6734590','nombres'=>'Pedro',   'apellidos'=>'Condori Huanca',  'telefono'=>'73456703','email'=>'pcondori@ficct.edu.bo',  'titulo_profesional'=>'Lic. en Física',                   'maestria'=>'Maestría en Física Aplicada',                   'diplomado_educacion_superior'=>'Diplomado en Educación Superior',    'certificacion_ingles'=>null,'area_formacion'=>'Física'],
-            ['ci'=>'7845601','nombres'=>'Lucia',   'apellidos'=>'Torrez Sánchez',  'telefono'=>'74567804','email'=>'ltorrez@ficct.edu.bo',   'titulo_profesional'=>'Lic. en Lingüística',              'maestria'=>'Maestría en Enseñanza del Inglés',              'diplomado_educacion_superior'=>'Diplomado en Edu. Superior Bilingüe','certificacion_ingles'=>'C1','area_formacion'=>'Inglés / Idiomas'],
-            ['ci'=>'8956712','nombres'=>'Julio',   'apellidos'=>'Chávez Montaño',  'telefono'=>'75678905','email'=>'jchavez@ficct.edu.bo',   'titulo_profesional'=>'Ing. de Sistemas',                 'maestria'=>'Maestría en Sistemas de Información',           'diplomado_educacion_superior'=>'Diplomado en Docencia Universitaria','certificacion_ingles'=>'B1','area_formacion'=>'Computación / Informática'],
+            ['ci'=>'7845601','nombres'=>'Lucia',   'apellidos'=>'Torrez Sánchez',  'telefono'=>'74567804','email'=>'ltorrez@ficct.edu.bo',   'titulo_profesional'=>'Lic. en Lingüística',              'maestria'=>'Maestría en Enseñanza del Inglés',              'diplomado_educacion_superior'=>'Diplomado en Edu. Superior Bilingüe','certificacion_ingles'=>'C1','area_formacion'=>'Inglés'],
+            ['ci'=>'8956712','nombres'=>'Julio',   'apellidos'=>'Chávez Montaño',  'telefono'=>'75678905','email'=>'jchavez@ficct.edu.bo',   'titulo_profesional'=>'Ing. de Sistemas',                 'maestria'=>'Maestría en Sistemas de Información',           'diplomado_educacion_superior'=>'Diplomado en Docencia Universitaria','certificacion_ingles'=>'B1','area_formacion'=>'Computación'],
             ['ci'=>'9067823','nombres'=>'Sandra',  'apellidos'=>'Apaza Mamani',    'telefono'=>'76789006','email'=>'sapaza@ficct.edu.bo',    'titulo_profesional'=>'Lic. en Matemáticas',              'maestria'=>'Maestría en Matemática Educativa',              'diplomado_educacion_superior'=>'Diplomado en Educación Superior',    'certificacion_ingles'=>null,'area_formacion'=>'Matemáticas'],
             ['ci'=>'1078934','nombres'=>'Hugo',    'apellidos'=>'Ticona Larico',   'telefono'=>'77890107','email'=>'hticona@ficct.edu.bo',   'titulo_profesional'=>'Lic. en Física',                   'maestria'=>'Maestría en Física Nuclear',                   'diplomado_educacion_superior'=>'Diplomado en Educación Superior',    'certificacion_ingles'=>null,'area_formacion'=>'Física'],
-            ['ci'=>'2189045','nombres'=>'Ana',     'apellidos'=>'Beltrán Rojas',   'telefono'=>'78901208','email'=>'abeltran@ficct.edu.bo',  'titulo_profesional'=>'Lic. en Lingüística Aplicada',     'maestria'=>'Maestría en Traducción e Interpretación',      'diplomado_educacion_superior'=>'Diplomado en Educación Superior',    'certificacion_ingles'=>'C2','area_formacion'=>'Inglés / Idiomas'],
-            ['ci'=>'3290156','nombres'=>'Carlos',  'apellidos'=>'Villanueva Cruz', 'telefono'=>'79012309','email'=>'cvillanueva@ficct.edu.bo','titulo_profesional'=>'Ing. en Redes y Telecomunicaciones','maestria'=>'Maestría en Redes de Computadoras',            'diplomado_educacion_superior'=>'Diplomado en Docencia Universitaria','certificacion_ingles'=>'B2','area_formacion'=>'Computación / Informática'],
+            ['ci'=>'2189045','nombres'=>'Ana',     'apellidos'=>'Beltrán Rojas',   'telefono'=>'78901208','email'=>'abeltran@ficct.edu.bo',  'titulo_profesional'=>'Lic. en Lingüística Aplicada',     'maestria'=>'Maestría en Traducción e Interpretación',      'diplomado_educacion_superior'=>'Diplomado en Educación Superior',    'certificacion_ingles'=>'C2','area_formacion'=>'Inglés'],
+            ['ci'=>'3290156','nombres'=>'Carlos',  'apellidos'=>'Villanueva Cruz', 'telefono'=>'79012309','email'=>'cvillanueva@ficct.edu.bo','titulo_profesional'=>'Ing. en Redes y Telecomunicaciones','maestria'=>'Maestría en Redes de Computadoras',            'diplomado_educacion_superior'=>'Diplomado en Docencia Universitaria','certificacion_ingles'=>'B2','area_formacion'=>'Computación'],
             ['ci'=>'4301267','nombres'=>'Maria',   'apellidos'=>'Aliaga Pinto',    'telefono'=>'70123410','email'=>'maliaga@ficct.edu.bo',   'titulo_profesional'=>'Lic. en Matemáticas',              'maestria'=>'Maestría en Estadística Aplicada',             'diplomado_educacion_superior'=>'Diplomado en Educación Superior',    'certificacion_ingles'=>null,'area_formacion'=>'Matemáticas'],
         ];
 
@@ -98,7 +98,7 @@ class CupDataSeeder extends Seeder
             }
         }
 
-        // ── 7. POSTULANTES (150 ficticios) (CU-05 / CU-08) ──────────────────
+        // ── 7. POSTULANTES (150 ficticios) (CU-05) ──────────────────────────
         $nombres   = ['Juan','María','Carlos','Ana','Luis','Rosa','Jorge','Elena','Miguel','Paola','Ricardo','Sandra','Fernando','Claudia','Daniel','Patricia','Eduardo','Verónica','Andrés','Natalia','Sergio','Valeria','Marcos','Alejandra','Pablo','Camila','Oscar','Fernanda','Iván','Diana'];
         $apellidos = ['Mamani','Quispe','Condori','Flores','García','Torrez','Chávez','Apaza','Ticona','Aliaga','Villanueva','Beltrán','Herrera','Pinto','Rojas','Vega','Soria','Marca','Gutiérrez','Espinoza','Mendoza','Salazar','Barrios','Cáceres','Pérez','López','Miranda','Vargas','Huanca','Cruz'];
         $colegios  = ['Colegio Nacional Bolivia','U.E. San Calixto','U.E. Don Bosco','U.E. La Salle','U.E. Franz Tamayo','Colegio Los Andes','U.E. Ayacucho','U.E. Simón Bolívar','Colegio Hernando Siles','U.E. Sagrado Corazón'];
@@ -159,7 +159,7 @@ class CupDataSeeder extends Seeder
             $postInsertados++;
         }
 
-        // ── 8. GRUPOS (CU-17) — CEIL(150/60) = 3 grupos ─────────────────────
+        // ── 8. GRUPOS (CU-11) — CEIL(150/60) = 3 grupos ─────────────────────
         if (DB::table('grupos')->where('gestion_id',$gestion->id)->count() === 0) {
             DB::table('grupos')->insert([
                 ['gestion_id'=>$gestion->id,'codigo'=>'GRP-A','turno'=>'mañana', 'modalidad'=>'presencial','capacidad_maxima'=>60,'estado'=>true,'created_at'=>now(),'updated_at'=>now()],
@@ -169,7 +169,7 @@ class CupDataSeeder extends Seeder
         }
         $grupos = DB::table('grupos')->where('gestion_id',$gestion->id)->get();
 
-        // ── 9. INSCRIBIR POSTULANTES A GRUPOS (CU-21) ────────────────────────
+        // ── 9. INSCRIBIR POSTULANTES A GRUPOS (CU-11) ────────────────────────
         $postIds = DB::table('postulantes')->where('gestion_id',$gestion->id)->pluck('id')->toArray();
         foreach ($postIds as $idx => $pid) {
             $grupoObj = $grupos[$idx % count($grupos)]; // distribución rotativa
@@ -180,7 +180,7 @@ class CupDataSeeder extends Seeder
             DB::table('postulantes')->where('id',$pid)->update(['estado'=>'en_curso','updated_at'=>now()]);
         }
 
-        // ── 10. ASIGNACIONES DOCENTE–GRUPO–MATERIA (CU-18) ──────────────────
+        // ── 10. ASIGNACIONES DOCENTE–GRUPO–MATERIA (CU-12) ──────────────────
         //  Comp→Roberto,Julio,Carlos | Mat→Carla,Sandra,Maria | Fis→Pedro,Hugo | Ing→Lucia,Ana
         $docIds = DB::table('docentes')->pluck('id','email')->toArray();
         $matIds = DB::table('materias')->pluck('id','nombre')->toArray();
@@ -210,7 +210,7 @@ class CupDataSeeder extends Seeder
             );
         }
 
-        // ── 11. NOTAS (CU-22 a CU-25) — 3 exámenes × 4 materias × 150 postulantes
+        // ── 11. NOTAS (CU-13 / CU-14) — 3 exámenes × 4 materias × 150 postulantes
         $matList = DB::table('materias')->get();
         $gpMap   = DB::table('grupo_postulante')->get()->groupBy('postulante_id');
 
@@ -250,7 +250,7 @@ class CupDataSeeder extends Seeder
             ]);
         }
 
-        // ── 12. ADMISIONES (CU-27 / CU-28 / CU-29) ──────────────────────────
+        // ── 12. ADMISIONES (CU-16 / CU-17 / CU-18) ──────────────────────────
         $cuposDB = DB::table('cupos_carrera')->where('gestion_id',$gestion->id)->pluck('cantidad_maxima','carrera_id')->toArray();
         $contadores = array_fill_keys(array_keys($cuposDB), 0);
 

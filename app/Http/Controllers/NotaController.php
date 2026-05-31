@@ -18,7 +18,7 @@ class NotaController extends Controller
         $this->middleware('permission:editar notas')->only('edit','update');
     }
 
-    /** CU-22/CU-26: Lista notas del grupo (docente ve solo sus grupos) */
+    /** CU-13/CU-15: Lista notas del grupo (docente ve solo sus grupos) */
     public function index(Request $r)
     {
         $gestion = Gestion::where('estado','en_curso')->first();
@@ -47,7 +47,7 @@ class NotaController extends Controller
         return view('notas.index', compact('grupos','grupoSel','materias','matSel','notas','sinNota','gestion'));
     }
 
-    /** CU-22: Formulario para registrar nota de un postulante */
+    /** CU-13: Formulario para registrar nota de un postulante */
     public function create(Request $r)
     {
         $r->validate(['postulante_id'=>'required|exists:postulantes,id','grupo_id'=>'required|exists:grupos,id','materia_id'=>'required|exists:materias,id']);
@@ -57,7 +57,7 @@ class NotaController extends Controller
         return view('notas.create', compact('postulante','grupo','materia'));
     }
 
-    /** CU-22/CU-23/CU-24/CU-25: Guarda nota y recalcula estado del postulante */
+    /** CU-13/CU-14: Guarda nota y recalcula estado del postulante */
     public function store(Request $r)
     {
         $d = $r->validate([
@@ -67,15 +67,29 @@ class NotaController extends Controller
             'examen1'       => 'required|numeric|min:0|max:100',
             'examen2'       => 'required|numeric|min:0|max:100',
             'examen3'       => 'required|numeric|min:0|max:100',
+        ], [
+            'examen1.max' => 'La nota del examen 1 debe estar entre 0 y 100.',
+            'examen2.max' => 'La nota del examen 2 debe estar entre 0 y 100.',
+            'examen3.max' => 'La nota del examen 3 debe estar entre 0 y 100.',
+            'examen1.min' => 'La nota del examen 1 debe estar entre 0 y 100.',
+            'examen2.min' => 'La nota del examen 2 debe estar entre 0 y 100.',
+            'examen3.min' => 'La nota del examen 3 debe estar entre 0 y 100.',
         ]);
+
+        // Validar que el postulante esté inscrito en el grupo
+        $inscrito = DB::table('grupo_postulante')
+            ->where(['grupo_id'=>$d['grupo_id'],'postulante_id'=>$d['postulante_id']])->exists();
+        if (!$inscrito) {
+            return back()->withErrors(['postulante_id'=>'El postulante no está inscrito en este grupo.'])->withInput();
+        }
 
         $nota = Nota::updateOrCreate(
             ['postulante_id'=>$d['postulante_id'],'materia_id'=>$d['materia_id'],'grupo_id'=>$d['grupo_id']],
             ['examen1'=>$d['examen1'],'examen2'=>$d['examen2'],'examen3'=>$d['examen3']]
         );
-        $nota->calcularNotaFinal();   // CU-23
+        $nota->calcularNotaFinal();   // CU-14
 
-        $this->_actualizarEstadoPostulante($d['postulante_id']); // CU-24/CU-25
+        $this->_actualizarEstadoPostulante($d['postulante_id']); // CU-14
         $this->registrarEnBitacora("Registró nota para postulante ID:{$d['postulante_id']}", $nota->id, 'Notas');
 
         return redirect()->route('notas.index', ['grupo_id'=>$d['grupo_id'],'materia_id'=>$d['materia_id']])
@@ -94,6 +108,10 @@ class NotaController extends Controller
             'examen1'=>'required|numeric|min:0|max:100',
             'examen2'=>'required|numeric|min:0|max:100',
             'examen3'=>'required|numeric|min:0|max:100',
+        ], [
+            'examen1.max' => 'La nota del examen 1 debe estar entre 0 y 100.',
+            'examen2.max' => 'La nota del examen 2 debe estar entre 0 y 100.',
+            'examen3.max' => 'La nota del examen 3 debe estar entre 0 y 100.',
         ]);
         $nota->update($d);
         $nota->calcularNotaFinal();
@@ -103,7 +121,7 @@ class NotaController extends Controller
             ->with('success','Nota actualizada.');
     }
 
-    /** CU-24/CU-25: Recalcula promedio general y estado aprobado/no_aprobado */
+    /** CU-14: Recalcula promedio general y estado aprobado/no_aprobado */
     private function _actualizarEstadoPostulante(int $postulanteId): void
     {
         $notas = Nota::where('postulante_id', $postulanteId)->get();

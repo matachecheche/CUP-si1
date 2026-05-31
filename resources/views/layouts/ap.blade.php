@@ -43,99 +43,128 @@
     <div class="sb-ttl">🔐 Autenticación y Seguridad</div>
     <a class="ni {{ request()->routeIs('panel') ? 'act':'' }}" href="{{ route('panel') }}">
       <i class="ico fas fa-th-large"></i>Panel de Control</a>
+    <a class="ni" href="{{ route('login') }}">
+      <i class="ico fas fa-sign-in-alt"></i>CU-01 · Iniciar sesión</a>
+    <a class="ni" href="{{ route('logout') }}">
+      <i class="ico fas fa-sign-out-alt"></i>CU-02 · Cerrar sesión</a>
+    <a class="ni" href="{{ route('password.request') }}">
+      <i class="ico fas fa-key"></i>CU-03 · Recuperar contraseña</a>
     @can('ver usuarios')
     <a class="ni {{ request()->routeIs('users.*') ? 'act':'' }}" href="{{ route('users.index') }}">
-      <i class="ico fas fa-users-cog"></i>Gestión de Usuarios</a>
+      <i class="ico fas fa-users-cog"></i>CU-04 · Gestionar usuarios y roles</a>
+    @else
+    <span class="ni pnd"><i class="ico fas fa-users-cog"></i>CU-04 · Gestionar usuarios y roles<span class="nbg">Sin acceso</span></span>
     @endcan
     @can('ver roles')
     <a class="ni {{ request()->routeIs('roles.*') ? 'act':'' }}" href="{{ route('roles.index') }}">
       <i class="ico fas fa-user-shield"></i>Roles y Permisos</a>
+    @else
+    <span class="ni pnd"><i class="ico fas fa-user-shield"></i>Roles y Permisos<span class="nbg">Sin acceso</span></span>
     @endcan
     @can('ver bitacora')
     <a class="ni {{ request()->routeIs('bitacora.*') ? 'act':'' }}" href="{{ route('bitacora.index') }}">
       <i class="ico fas fa-journal-whills"></i>Bitácora</a>
+    @else
+    <span class="ni pnd"><i class="ico fas fa-journal-whills"></i>Bitácora<span class="nbg">Sin acceso</span></span>
     @endcan
   </div>
   <div class="sbdiv"></div>
 
-  {{-- Módulo 2: Registro de Postulantes --}}
+  {{-- Módulo 2: Registro de Postulantes y Gestión Académica --}}
   <div class="sb-sec">
-    <div class="sb-ttl">👤 Registro de Postulantes</div>
+    <div class="sb-ttl">👤 Registro de Postulantes y Gestión Académica</div>
     @can('ver postulantes')
     <a class="ni {{ request()->routeIs('postulantes.*') ? 'act':'' }}" href="{{ route('postulantes.index') }}">
-      <i class="ico fas fa-user-plus"></i>Postulantes</a>
+      <i class="ico fas fa-user-plus"></i>CU-05 · Gestionar postulantes</a>
     @else
-    <span class="ni pnd"><i class="ico fas fa-user-plus"></i>Postulantes<span class="nbg">Sin acceso</span></span>
+    <span class="ni pnd"><i class="ico fas fa-user-plus"></i>CU-05 · Gestionar postulantes<span class="nbg">Sin acceso</span></span>
     @endcan
-  </div>
-  <div class="sbdiv"></div>
-
-  {{-- Módulo 3: Gestión Académica --}}
-  <div class="sb-sec">
-    <div class="sb-ttl">🎓 Gestión Académica</div>
     @can('ver gestiones')
     <a class="ni {{ request()->routeIs('gestiones.*') ? 'act':'' }}" href="{{ route('gestiones.index') }}">
-      <i class="ico fas fa-calendar-alt"></i>Gestiones Académicas</a>
+      <i class="ico fas fa-calendar-alt"></i>CU-06 · Gestionar gestiones académicas</a>
     @else
-    <span class="ni pnd"><i class="ico fas fa-calendar-alt"></i>Gestiones<span class="nbg">Sin acceso</span></span>
+    <span class="ni pnd"><i class="ico fas fa-calendar-alt"></i>CU-06 · Gestionar gestiones académicas<span class="nbg">Sin acceso</span></span>
     @endcan
     @can('ver carreras')
     <a class="ni {{ request()->routeIs('carreras.*') ? 'act':'' }}" href="{{ route('carreras.index') }}">
-      <i class="ico fas fa-graduation-cap"></i>Carreras y Cupos</a>
-    <a class="ni {{ request()->routeIs('cupos.*') ? 'act':'' }}" href="{{ route('cupos.index') }}">
-      <i class="ico fas fa-sliders-h"></i>Cupos por Gestión</a>
+      <i class="ico fas fa-graduation-cap"></i>CU-07 · Gestionar carreras de la facultad</a>
     @else
-    <span class="ni pnd"><i class="ico fas fa-graduation-cap"></i>Carreras y Cupos<span class="nbg">Sin acceso</span></span>
+    <span class="ni pnd"><i class="ico fas fa-graduation-cap"></i>CU-07 · Gestionar carreras de la facultad<span class="nbg">Sin acceso</span></span>
+    @endcan
+    @can('ver cupos')
+    <a class="ni {{ request()->routeIs('cupos.*') ? 'act':'' }}" href="{{ route('cupos.index') }}">
+      <i class="ico fas fa-sliders-h"></i>CU-08 · Definir cupos por carrera y gestión</a>
+    @else
+    <span class="ni pnd"><i class="ico fas fa-sliders-h"></i>CU-08 · Definir cupos por carrera y gestión<span class="nbg">Sin acceso</span></span>
     @endcan
     @can('ver materias')
     <a class="ni {{ request()->routeIs('materias.*') ? 'act':'' }}" href="{{ route('materias.index') }}">
-      <i class="ico fas fa-book-open"></i>Materias del CUP</a>
+      <i class="ico fas fa-book-open"></i>CU-09 · Gestionar materias del CUP</a>
     @else
-    <span class="ni pnd"><i class="ico fas fa-book-open"></i>Materias del CUP<span class="nbg">Sin acceso</span></span>
+    <span class="ni pnd"><i class="ico fas fa-book-open"></i>CU-09 · Gestionar materias del CUP<span class="nbg">Sin acceso</span></span>
     @endcan
+    <span class="ni pnd"><i class="ico fas fa-credit-card"></i>CU-20 · Gestionar pasarela de pago<span class="nbg">Próximamente</span></span>
   </div>
   <div class="sbdiv"></div>
 
-  {{-- Módulo 4: Asignación de Grupos y Docentes --}}
+  {{-- Módulo 3: Asignación de Grupos y Docentes --}}
   <div class="sb-sec">
-    <div class="sb-ttl">🏫 Grupos y Docentes</div>
+    <div class="sb-ttl">🏫 Asignación de Grupos y Docentes</div>
     @can('ver docentes')
     <a class="ni {{ request()->routeIs('docentes.*') ? 'act':'' }}" href="{{ route('docentes.index') }}">
-      <i class="ico fas fa-chalkboard-teacher"></i>Docentes</a>
+      <i class="ico fas fa-chalkboard-teacher"></i>CU-10 · Gestionar docentes</a>
     @else
-    <span class="ni pnd"><i class="ico fas fa-chalkboard-teacher"></i>Docentes<span class="nbg">Sin acceso</span></span>
+    <span class="ni pnd"><i class="ico fas fa-chalkboard-teacher"></i>CU-10 · Gestionar docentes<span class="nbg">Sin acceso</span></span>
     @endcan
     @can('ver grupos')
     <a class="ni {{ request()->routeIs('grupos.*') ? 'act':'' }}" href="{{ route('grupos.index') }}">
-      <i class="ico fas fa-layer-group"></i>Grupos y Horarios</a>
+      <i class="ico fas fa-layer-group"></i>CU-11 · Gestionar grupos</a>
+    <a class="ni {{ request()->routeIs('grupos.*') ? 'act':'' }}" href="{{ route('grupos.index') }}">
+      <i class="ico fas fa-user-tie"></i>CU-12 · Asignar docente a grupos y materias</a>
     @else
-    <span class="ni pnd"><i class="ico fas fa-layer-group"></i>Grupos y Horarios<span class="nbg">Sin acceso</span></span>
+    <span class="ni pnd"><i class="ico fas fa-layer-group"></i>CU-11 · Gestionar grupos<span class="nbg">Sin acceso</span></span>
+    <span class="ni pnd"><i class="ico fas fa-user-tie"></i>CU-12 · Asignar docente a grupos y materias<span class="nbg">Sin acceso</span></span>
     @endcan
   </div>
   <div class="sbdiv"></div>
 
-  {{-- Módulo 5: Exámenes --}}
+  {{-- Módulo 4: Exámenes y Control Académico --}}
   <div class="sb-sec">
     <div class="sb-ttl">📝 Exámenes y Control Académico</div>
     @can('ver notas')
     <a class="ni {{ request()->routeIs('notas.*') ? 'act':'' }}" href="{{ route('notas.index') }}">
-      <i class="ico fas fa-pen-nib"></i>Registro de Notas</a>
+      <i class="ico fas fa-pencil-alt"></i>CU-13 · Registrar notas de exámenes</a>
+    <a class="ni {{ request()->routeIs('notas.*') ? 'act':'' }}" href="{{ route('notas.index') }}">
+      <i class="ico fas fa-calculator"></i>CU-14 · Calcular nota final, promedio y estado</a>
+    <a class="ni {{ request()->routeIs('notas.*') ? 'act':'' }}" href="{{ route('notas.index') }}">
+      <i class="ico fas fa-search"></i>CU-15 · Consultar notas del postulante</a>
     @else
-    <span class="ni pnd"><i class="ico fas fa-pen-nib"></i>Registro de Notas<span class="nbg">Sin acceso</span></span>
+    <span class="ni pnd"><i class="ico fas fa-pencil-alt"></i>CU-13 · Registrar notas de exámenes<span class="nbg">Sin acceso</span></span>
+    <span class="ni pnd"><i class="ico fas fa-calculator"></i>CU-14 · Calcular nota final, promedio y estado<span class="nbg">Sin acceso</span></span>
+    <span class="ni pnd"><i class="ico fas fa-search"></i>CU-15 · Consultar notas del postulante<span class="nbg">Sin acceso</span></span>
     @endcan
   </div>
   <div class="sbdiv"></div>
 
-  {{-- Módulo 6: Panel Administrativo --}}
+  {{-- Módulo 5: Panel Administrativo y Reportes --}}
   <div class="sb-sec">
-    <div class="sb-ttl">📊 Panel Administrativo</div>
-    @can('ver admision')
+    <div class="sb-ttl">📊 Panel Administrativo y Reportes</div>
+    @can('procesar admision')
     <a class="ni {{ request()->routeIs('admision.*') ? 'act':'' }}" href="{{ route('admision.index') }}">
-      <i class="ico fas fa-trophy"></i>Proceso de Admisión</a>
+      <i class="ico fas fa-cogs"></i>CU-16 · Procesar admisión por primera opción</a>
+    <a class="ni {{ request()->routeIs('admision.*') ? 'act':'' }}" href="{{ route('admision.index') }}">
+      <i class="ico fas fa-exchange-alt"></i>CU-17 · Reasignar postulantes a segunda opción</a>
     @else
-    <span class="ni pnd"><i class="ico fas fa-trophy"></i>Proceso de Admisión<span class="nbg">Sin acceso</span></span>
+    <span class="ni pnd"><i class="ico fas fa-cogs"></i>CU-16 · Procesar admisión por primera opción<span class="nbg">Sin acceso</span></span>
+    <span class="ni pnd"><i class="ico fas fa-exchange-alt"></i>CU-17 · Reasignar postulantes a segunda opción<span class="nbg">Sin acceso</span></span>
     @endcan
-    <span class="ni pnd"><i class="ico fas fa-chart-bar"></i>Reportes y Estadísticas<span class="nbg">Ciclo 2</span></span>
+    @can('publicar admision')
+    <a class="ni {{ request()->routeIs('admision.*') ? 'act':'' }}" href="{{ route('admision.index') }}">
+      <i class="ico fas fa-bullhorn"></i>CU-18 · Publicar resultado final de admisión</a>
+    @else
+    <span class="ni pnd"><i class="ico fas fa-bullhorn"></i>CU-18 · Publicar resultado final de admisión<span class="nbg">Sin acceso</span></span>
+    @endcan
+    <span class="ni pnd"><i class="ico fas fa-chart-bar"></i>CU-19 · Gestionar reportes y estadísticas<span class="nbg">Próximamente</span></span>
   </div>
   <div class="sbdiv"></div>
 

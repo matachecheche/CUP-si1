@@ -132,7 +132,8 @@ CREATE TABLE IF NOT EXISTS public.gestiones
     created_at timestamp(0) without time zone,
     updated_at timestamp(0) without time zone,
     CONSTRAINT gestiones_pkey PRIMARY KEY (id),
-    CONSTRAINT gestiones_descripcion_unique UNIQUE (descripcion)
+    CONSTRAINT gestiones_descripcion_unique UNIQUE (descripcion),
+    CONSTRAINT gestiones_estado_check CHECK (estado IN ('planificacion','inscripcion','en_curso','finalizado'))
 );
 
 CREATE TABLE IF NOT EXISTS public.carreras
@@ -280,6 +281,7 @@ CREATE TABLE IF NOT EXISTS public.postulantes
     CONSTRAINT postulantes_ci_unique UNIQUE (ci),
     CONSTRAINT postulantes_email_unique UNIQUE (email),
     CONSTRAINT postulantes_estado_check CHECK (estado IN ('preinscrito','inscrito','en_curso','aprobado','no_aprobado','admitido','admitido_segunda_opcion','no_admitido')),
+    CONSTRAINT postulantes_sexo_check CHECK (sexo IN ('M','F','Otro')),
     CONSTRAINT postulantes_gestion_id_foreign FOREIGN KEY (gestion_id)
         REFERENCES public.gestiones (id),
     CONSTRAINT postulantes_primera_opcion_id_foreign FOREIGN KEY (primera_opcion_id)
@@ -326,6 +328,8 @@ CREATE TABLE IF NOT EXISTS public.grupos
     updated_at timestamp(0) without time zone,
     CONSTRAINT grupos_pkey PRIMARY KEY (id),
     CONSTRAINT grupos_codigo_unique UNIQUE (codigo),
+    CONSTRAINT grupos_turno_check CHECK (turno IN ('mañana','tarde','noche')),
+    CONSTRAINT grupos_modalidad_check CHECK (modalidad IN ('presencial','virtual')),
     CONSTRAINT grupos_gestion_id_foreign FOREIGN KEY (gestion_id)
         REFERENCES public.gestiones (id)
 );
@@ -363,6 +367,7 @@ CREATE TABLE IF NOT EXISTS public.asignaciones
     updated_at timestamp(0) without time zone,
     CONSTRAINT asignaciones_pkey PRIMARY KEY (id),
     CONSTRAINT asignaciones_grupo_id_materia_id_unique UNIQUE (grupo_id, materia_id),
+    CONSTRAINT asignaciones_dia_check CHECK (dia IN ('lunes','martes','miercoles','jueves','viernes','sabado')),
     CONSTRAINT asignaciones_grupo_id_foreign FOREIGN KEY (grupo_id)
         REFERENCES public.grupos (id) ON DELETE CASCADE,
     CONSTRAINT asignaciones_docente_id_foreign FOREIGN KEY (docente_id)
@@ -428,6 +433,7 @@ CREATE TABLE IF NOT EXISTS public.admisiones
     updated_at timestamp(0) without time zone,
     CONSTRAINT admisiones_pkey PRIMARY KEY (id),
     CONSTRAINT admisiones_postulante_id_unique UNIQUE (postulante_id),
+    CONSTRAINT admisiones_resultado_check CHECK (resultado IN ('pendiente','admitido_primera','admitido_segunda','no_admitido')),
     CONSTRAINT admisiones_postulante_id_foreign FOREIGN KEY (postulante_id)
         REFERENCES public.postulantes (id) ON DELETE CASCADE,
     CONSTRAINT admisiones_gestion_id_foreign FOREIGN KEY (gestion_id)

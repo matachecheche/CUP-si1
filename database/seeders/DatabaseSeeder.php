@@ -8,6 +8,7 @@ class DatabaseSeeder extends Seeder {
             RolesSeeder::class,
             UsuariosSeeder::class,
             CupDataSeeder::class,
+            PagosSeeder::class,
         ]);
     }
 }

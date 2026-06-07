@@ -50,4 +50,9 @@ class Postulante extends Model
     {
         return $this->hasMany(Pago::class);
     }
+
+    public function admision()
+    {
+        return $this->hasOne(Admision::class);
+    }
 }

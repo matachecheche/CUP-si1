@@ -158,14 +158,14 @@
     <div class="mh"><div class="mn2" style="background:#d1fae5;color:#065f46">5</div>Módulo de Panel Administrativo y Reportes</div>
     <div class="mb2">
       @can('procesar admision')
-      <div class="cr2x lnk"><a href="{{ route('admision.index') }}"><span class="ctg dn">CU-16</span><i class="ci2 fas fa-cogs"></i>Procesar admisión por primera opción</a></div>
-      <div class="cr2x lnk"><a href="{{ route('admision.index') }}"><span class="ctg dn">CU-17</span><i class="ci2 fas fa-exchange-alt"></i>Reasignar postulantes a segunda opción</a></div>
+      <div class="cr2x lnk"><a href="{{ route('admision.primera') }}"><span class="ctg dn">CU-16</span><i class="ci2 fas fa-cogs"></i>Procesar admisión por primera opción</a></div>
+      <div class="cr2x lnk"><a href="{{ route('admision.segunda') }}"><span class="ctg dn">CU-17</span><i class="ci2 fas fa-exchange-alt"></i>Reasignar postulantes a segunda opción</a></div>
       @else
       <div class="cr2x dis"><span class="ctg pn">CU-16</span><i class="ci2 fas fa-lock"></i>Procesar admisión por primera opción<span class="cpl">Sin acceso</span></div>
       <div class="cr2x dis"><span class="ctg pn">CU-17</span><i class="ci2 fas fa-lock"></i>Reasignar postulantes a segunda opción<span class="cpl">Sin acceso</span></div>
       @endcan
       @can('publicar admision')
-      <div class="cr2x lnk"><a href="{{ route('admision.index') }}"><span class="ctg dn">CU-18</span><i class="ci2 fas fa-bullhorn"></i>Publicar resultado final de admisión</a></div>
+      <div class="cr2x lnk"><a href="{{ route('admision.publicacion') }}"><span class="ctg dn">CU-18</span><i class="ci2 fas fa-bullhorn"></i>Publicar resultado final de admisión</a></div>
       @else
       <div class="cr2x dis"><span class="ctg pn">CU-18</span><i class="ci2 fas fa-lock"></i>Publicar resultado final de admisión<span class="cpl">Sin acceso</span></div>
       @endcan

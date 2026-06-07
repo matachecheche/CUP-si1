@@ -74,9 +74,15 @@ Route::middleware('auth')->group(function () {
     Route::post('grupos/generar-automatico', [GrupoController::class, 'generar'])->name('grupos.generar');
     Route::post('grupos/{grupo}/asignar-docente', [GrupoController::class, 'asignarDocente'])->name('grupos.asignarDocente');
     Route::post('grupos/{grupo}/inscribir', [GrupoController::class, 'inscribirPostulantes'])->name('grupos.inscribirPostulantes');
-    Route::get('admision', [AdmisionController::class, 'index'])->name('admision.index');
-    Route::post('admision/procesar', [AdmisionController::class, 'procesar'])->name('admision.procesar');
-    Route::post('admision/publicar', [AdmisionController::class, 'publicar'])->name('admision.publicar');
+    // ── CU-16/17/18: proceso de admisión en 3 pasos ────────────────────────
+    Route::get( 'admision',             [AdmisionController::class,'index'])->name('admision.index');
+    Route::get( 'admision/primera',     [AdmisionController::class,'primera'])->name('admision.primera');
+    Route::post('admision/primera',     [AdmisionController::class,'procesarPrimera'])->name('admision.primera.procesar');
+    Route::get( 'admision/segunda',     [AdmisionController::class,'segunda'])->name('admision.segunda');
+    Route::post('admision/segunda',     [AdmisionController::class,'procesarSegunda'])->name('admision.segunda.procesar');
+    Route::get( 'admision/publicacion', [AdmisionController::class,'publicacion'])->name('admision.publicacion');
+    Route::post('admision/publicar',    [AdmisionController::class,'publicar'])->name('admision.publicar');
+    Route::post('admision/reiniciar',   [AdmisionController::class,'reiniciar'])->name('admision.reiniciar');
 
     // Módulo 7: Pago de inscripción (CU-20) — Stripe Checkout
     Route::get('pagos',                    [PagoController::class, 'index'])->name('pagos.index');

@@ -7,6 +7,12 @@
   <ol class="bc"><li><a href="{{ route('panel') }}">Inicio</a></li><li>Notas</li></ol>
 </div>
 
+<div style="margin-bottom:1rem;display:flex;gap:.5rem;flex-wrap:wrap" class="no-print">
+  <a class="btn bsm bp"  href="{{ route('notas.planilla', request()->only('grupo_id','materia_id')) }}"><i class="fas fa-table"></i> Planilla de captura</a>
+  <a class="btn bsm bo2" href="{{ route('notas.calcular') }}"><i class="fas fa-calculator"></i> CU-14 · Cálculo</a>
+  <a class="btn bsm bo2" href="{{ route('notas.consultar') }}"><i class="fas fa-search"></i> CU-15 · Consulta</a>
+</div>
+
 {{-- Selector grupo / materia --}}
 <form method="GET" action="{{ route('notas.index') }}" style="display:flex;gap:.75rem;margin-bottom:1.25rem;flex-wrap:wrap">
   <select name="grupo_id" class="fs" style="width:200px" onchange="this.form.submit()">

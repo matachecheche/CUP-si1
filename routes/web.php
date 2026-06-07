@@ -67,7 +67,13 @@ Route::middleware('auth')->group(function () {
     Route::resource('docentes', DocenteController::class);
 
     // Módulo 5: Exámenes y Control Académico (CU-13 a CU-15)
-    Route::resource('notas', NotaController::class)->except(['destroy']);
+    // ── CU-13/14/15: notas con interfaz propia por caso de uso ─────────────
+    Route::get( 'notas/planilla',  [NotaController::class,'planilla'])->name('notas.planilla');
+    Route::post('notas/planilla',  [NotaController::class,'guardarPlanilla'])->name('notas.planilla.guardar');
+    Route::get( 'notas/calcular',  [NotaController::class,'calcular'])->name('notas.calcular');
+    Route::post('notas/calcular',  [NotaController::class,'procesarCalculo'])->name('notas.calcular.procesar');
+    Route::get( 'notas/consultar', [NotaController::class,'consultar'])->name('notas.consultar');
+    Route::resource('notas', NotaController::class)->except(['destroy','show']);
 
     // Módulo 6: Panel Administrativo y Reportes (CU-11/12 grupos, CU-16 a CU-18 admisión)
     Route::resource('grupos', GrupoController::class);

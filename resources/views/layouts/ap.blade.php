@@ -142,11 +142,11 @@
   <div class="sb-sec">
     <div class="sb-ttl">📝 Exámenes y Control Académico</div>
     @can('ver notas')
-    <a class="ni {{ request()->routeIs('notas.*') ? 'act':'' }}" href="{{ route('notas.index') }}">
+    <a class="ni {{ request()->routeIs('notas.index','notas.planilla','notas.create','notas.edit') ? 'act':'' }}" href="{{ route('notas.index') }}">
       <i class="ico fas fa-pencil-alt"></i>CU-13 · Registrar notas de exámenes</a>
-    <a class="ni {{ request()->routeIs('notas.*') ? 'act':'' }}" href="{{ route('notas.index') }}">
+    <a class="ni {{ request()->routeIs('notas.calcular') ? 'act':'' }}" href="{{ route('notas.calcular') }}">
       <i class="ico fas fa-calculator"></i>CU-14 · Calcular nota final, promedio y estado</a>
-    <a class="ni {{ request()->routeIs('notas.*') ? 'act':'' }}" href="{{ route('notas.index') }}">
+    <a class="ni {{ request()->routeIs('notas.consultar') ? 'act':'' }}" href="{{ route('notas.consultar') }}">
       <i class="ico fas fa-search"></i>CU-15 · Consultar notas del postulante</a>
     @else
     <span class="ni pnd"><i class="ico fas fa-pencil-alt"></i>CU-13 · Registrar notas de exámenes<span class="nbg">Sin acceso</span></span>

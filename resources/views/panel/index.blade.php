@@ -143,8 +143,8 @@
     <div class="mb2">
       @can('ver notas')
       <div class="cr2x lnk"><a href="{{ route('notas.index') }}"><span class="ctg dn">CU-13</span><i class="ci2 fas fa-pencil-alt"></i>Registrar notas de exámenes</a></div>
-      <div class="cr2x lnk"><a href="{{ route('notas.index') }}"><span class="ctg dn">CU-14</span><i class="ci2 fas fa-calculator"></i>Calcular nota final, promedio y estado</a></div>
-      <div class="cr2x lnk"><a href="{{ route('notas.index') }}"><span class="ctg dn">CU-15</span><i class="ci2 fas fa-search"></i>Consultar notas del postulante</a></div>
+      <div class="cr2x lnk"><a href="{{ route('notas.calcular') }}"><span class="ctg dn">CU-14</span><i class="ci2 fas fa-calculator"></i>Calcular nota final, promedio y estado</a></div>
+      <div class="cr2x lnk"><a href="{{ route('notas.consultar') }}"><span class="ctg dn">CU-15</span><i class="ci2 fas fa-search"></i>Consultar notas del postulante</a></div>
       @else
       <div class="cr2x dis"><span class="ctg pn">CU-13</span><i class="ci2 fas fa-lock"></i>Registrar notas de exámenes<span class="cpl">Sin acceso</span></div>
       <div class="cr2x dis"><span class="ctg pn">CU-14</span><i class="ci2 fas fa-lock"></i>Calcular nota final, promedio y estado<span class="cpl">Sin acceso</span></div>

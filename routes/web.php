@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\BitacoraController;
 use App\Http\Controllers\CarreraController;
+use App\Http\Controllers\ComunicadoController;
 use App\Http\Controllers\CupoController;
 use App\Http\Controllers\DocenteController;
 use App\Http\Controllers\GestionController;
@@ -82,6 +83,9 @@ Route::middleware('auth')->group(function () {
     Route::get('reportes',                              [ReporteController::class,'index'])->name('reportes.index');
     Route::get('reportes/{tipo}',                       [ReporteController::class,'show'])->name('reportes.show');
     Route::get('reportes/{tipo}/exportar/{formato}',    [ReporteController::class,'exportar'])->name('reportes.exportar');
+
+    // ── CU-21: Comunicados ─────────────────────────────────────────────────
+    Route::resource('comunicados', ComunicadoController::class)->except(['show']);
 });
 
 // Bitácora: cierre de pestaña

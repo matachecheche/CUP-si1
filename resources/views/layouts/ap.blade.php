@@ -180,6 +180,12 @@
     @else
     <span class="ni pnd"><i class="ico fas fa-chart-bar"></i>CU-19 · Gestionar reportes y estadísticas<span class="nbg">Sin acceso</span></span>
     @endcan
+    @can('ver comunicados')
+    <a class="ni {{ request()->routeIs('comunicados.*') ? 'act':'' }}" href="{{ route('comunicados.index') }}">
+      <i class="ico fas fa-bullhorn"></i>CU-21 · Gestionar comunicados</a>
+    @else
+    <span class="ni pnd"><i class="ico fas fa-bullhorn"></i>CU-21 · Gestionar comunicados<span class="nbg">Sin acceso</span></span>
+    @endcan
   </div>
   <div class="sbdiv"></div>
 

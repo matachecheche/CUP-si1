@@ -29,7 +29,11 @@ class HomeController extends Controller
         // Registrar acción en la bitácora
         $this->registrarEnBitacora('Usuario accedió al panel de control');
 
-        return view('panel.index');
+        $comunicados = \App\Models\Comunicado::vigentes()
+            ->paraUsuario(auth()->user())
+            ->orderByDesc('created_at')->limit(5)->get();
+
+        return view('panel.index', compact('comunicados'));
     }
 
     public function login()

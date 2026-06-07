@@ -20,6 +20,7 @@ class PermissionSeeder extends Seeder {
             'ver notas','crear notas','editar notas',
             'ver admision','procesar admision','publicar admision',
             'ver reportes',
+            'ver comunicados','crear comunicados','editar comunicados','eliminar comunicados',
         ];
         foreach($perms as $p) Permission::firstOrCreate(['name'=>$p,'guard_name'=>'web']);
     }

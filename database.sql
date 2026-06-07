@@ -314,6 +314,25 @@ CREATE TABLE IF NOT EXISTS public.users
         REFERENCES public.postulantes (id) ON DELETE SET NULL
 );
 
+-- Comunicados institucionales (CU-21): avisos dirigidos por audiencia.
+-- user_id = autor; ON DELETE SET NULL conserva el aviso si se elimina el usuario.
+CREATE TABLE IF NOT EXISTS public.comunicados
+(
+    id bigserial NOT NULL,
+    titulo character varying(150) NOT NULL,
+    contenido text NOT NULL,
+    audiencia character varying(255) NOT NULL DEFAULT 'todos'::character varying,
+    publicado boolean NOT NULL DEFAULT true,
+    vigente_hasta date,
+    user_id bigint,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone,
+    CONSTRAINT comunicados_pkey PRIMARY KEY (id),
+    CONSTRAINT comunicados_audiencia_check CHECK (audiencia IN ('todos','postulantes','docentes')),
+    CONSTRAINT comunicados_user_id_foreign FOREIGN KEY (user_id)
+        REFERENCES public.users (id) ON DELETE SET NULL
+);
+
 -- Grupos del curso preuniversitario, por gestión
 CREATE TABLE IF NOT EXISTS public.grupos
 (

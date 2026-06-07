@@ -9,6 +9,7 @@ class DatabaseSeeder extends Seeder {
             UsuariosSeeder::class,
             CupDataSeeder::class,
             PagosSeeder::class,
+            ComunicadosSeeder::class,
         ]);
     }
 }

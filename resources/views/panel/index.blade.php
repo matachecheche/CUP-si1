@@ -43,6 +43,24 @@
   @endcan
 </div>
 
+@if(isset($comunicados) && $comunicados->isNotEmpty())
+<div class="card" style="margin:1.2rem 0;border-left:4px solid #b08a2e">
+  <div class="card-hd"><i class="fas fa-bullhorn"></i>Comunicados</div>
+  <div class="card-bd" style="display:flex;flex-direction:column;gap:.8rem">
+    @foreach($comunicados as $c)
+    <div style="{{ $loop->last ? '' : 'border-bottom:1px solid #eee9dd;padding-bottom:.6rem' }}">
+      <div style="display:flex;gap:.6rem;align-items:center;flex-wrap:wrap">
+        <strong>{{ $c->titulo }}</strong>
+        <span class="bg {{ $c->audiencia_badge }}">{{ ucfirst($c->audiencia) }}</span>
+        <span style="font-size:.75rem;color:var(--t3,#8a8678)">{{ $c->created_at->format('d/m/Y') }}</span>
+      </div>
+      <div style="font-size:.86rem;margin-top:.25rem;white-space:pre-line">{{ $c->contenido }}</div>
+    </div>
+    @endforeach
+  </div>
+</div>
+@endif
+
 <div class="mg">
   {{-- M1: Autenticación y Seguridad --}}
   <div class="mc m1">
@@ -155,6 +173,11 @@
       <div class="cr2x lnk"><a href="{{ route('reportes.index') }}"><span class="ctg dn">CU-19</span><i class="ci2 fas fa-chart-bar"></i>Gestionar reportes y estadísticas</a></div>
       @else
       <div class="cr2x dis"><span class="ctg pn">CU-19</span><i class="ci2 fas fa-lock"></i>Gestionar reportes y estadísticas<span class="cpl">Sin acceso</span></div>
+      @endcan
+      @can('ver comunicados')
+      <div class="cr2x lnk"><a href="{{ route('comunicados.index') }}"><span class="ctg dn">CU-21</span><i class="ci2 fas fa-bullhorn"></i>Gestionar comunicados</a></div>
+      @else
+      <div class="cr2x dis"><span class="ctg pn">CU-21</span><i class="ci2 fas fa-lock"></i>Gestionar comunicados<span class="cpl">Sin acceso</span></div>
       @endcan
     </div>
   </div>

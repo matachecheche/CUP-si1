@@ -18,6 +18,7 @@ use App\Http\Controllers\NotaController;
 use App\Http\Controllers\PagoController;
 use App\Http\Controllers\PostulanteController;
 use App\Http\Controllers\ReporteController;
+use App\Http\Controllers\ResultadoPublicoController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UsuarioController;
 use Illuminate\Support\Facades\Auth;
@@ -34,6 +35,11 @@ Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('/logout', [LogoutController::class, 'logout'])->name('logout');
+
+// ── CU-22: Consulta pública de resultados de admisión (sin login) ───────────
+Route::get('resultados',  [ResultadoPublicoController::class, 'index'])->name('resultados.publico');
+Route::post('resultados', [ResultadoPublicoController::class, 'consultar'])
+    ->middleware('throttle:10,1')->name('resultados.consultar'); // 10 consultas/min por IP
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('panel');

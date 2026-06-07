@@ -186,6 +186,8 @@
     @else
     <span class="ni pnd"><i class="ico fas fa-bullhorn"></i>CU-21 · Gestionar comunicados<span class="nbg">Sin acceso</span></span>
     @endcan
+    <a class="ni" href="{{ route('resultados.publico') }}" target="_blank">
+      <i class="ico fas fa-search"></i>CU-22 · Consulta pública de resultados</a>
   </div>
   <div class="sbdiv"></div>
 

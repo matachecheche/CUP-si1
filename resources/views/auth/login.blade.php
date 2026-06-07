@@ -71,6 +71,7 @@ body{min-height:100vh;display:grid;place-items:center;background:var(--cr);
         </div>
         <button type="submit" class="btn-lg"><i class="fas fa-sign-in-alt"></i> Ingresar al Sistema</button>
         <div class="fgt"><a href="{{ route('password.request') }}"><i class="fas fa-key"></i> ¿Olvidaste tu contraseña?</a></div>
+        <div class="fgt"><a href="{{ route('resultados.publico') }}"><i class="fas fa-search"></i> Consultar resultados de admisión</a></div>
       </form>
     </div>
     <div class="lf">© {{ date('Y') }} CUP — Todos los derechos reservados</div>

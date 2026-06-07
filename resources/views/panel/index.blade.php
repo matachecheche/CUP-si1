@@ -179,6 +179,7 @@
       @else
       <div class="cr2x dis"><span class="ctg pn">CU-21</span><i class="ci2 fas fa-lock"></i>Gestionar comunicados<span class="cpl">Sin acceso</span></div>
       @endcan
+      <div class="cr2x lnk"><a href="{{ route('resultados.publico') }}" target="_blank"><span class="ctg dn">CU-22</span><i class="ci2 fas fa-search"></i>Consulta pública de resultados</a></div>
     </div>
   </div>
 </div>

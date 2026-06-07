@@ -55,4 +55,9 @@ class Postulante extends Model
     {
         return $this->hasOne(Admision::class);
     }
+
+    public function notas()
+    {
+        return $this->hasMany(Nota::class);
+    }
 }

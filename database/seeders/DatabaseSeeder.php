@@ -10,6 +10,7 @@ class DatabaseSeeder extends Seeder {
             CupDataSeeder::class,
             PagosSeeder::class,
             ComunicadosSeeder::class,
+            DashboardDemoSeeder::class,
         ]);
     }
 }

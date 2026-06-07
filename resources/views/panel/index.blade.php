@@ -61,6 +61,10 @@
 </div>
 @endif
 
+@if(isset($dash) && $dash)
+  @include('panel._'.$dash['tipo'], ['dash' => $dash])
+@endif
+
 <div class="mg">
   {{-- M1: Autenticación y Seguridad --}}
   <div class="mc m1">

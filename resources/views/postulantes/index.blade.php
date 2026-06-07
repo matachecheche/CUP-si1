@@ -21,6 +21,7 @@
 </td>
 <td><span class="bg {{ $p->estado_badge }}">{{ ucfirst(str_replace('_',' ',$p->estado)) }}</span></td>
 <td><div class="bg3">
+@if($p->estado === 'preinscrito')<a href="{{ route('pagos.pagar',$p) }}" class="btn bsm bv" title="Pagar inscripción"><i class="fas fa-credit-card"></i></a>@endif
 <a href="{{ route('postulantes.show',$p) }}" class="btn bsm bo2"><i class="fas fa-eye"></i></a>
 @can('editar postulantes')<a href="{{ route('postulantes.edit',$p) }}" class="btn bsm bw"><i class="fas fa-edit"></i></a>@endcan
 @can('eliminar postulantes')<form action="{{ route('postulantes.destroy',$p) }}" method="POST" style="display:inline">@csrf @method('DELETE')

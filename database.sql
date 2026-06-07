@@ -128,6 +128,7 @@ CREATE TABLE IF NOT EXISTS public.gestiones
     fecha_inicio date NOT NULL,
     fecha_fin date NOT NULL,
     estado character varying(255) NOT NULL DEFAULT 'planificacion'::character varying,
+    costo_inscripcion numeric(10,2) NOT NULL DEFAULT 850.00,
     created_at timestamp(0) without time zone,
     updated_at timestamp(0) without time zone,
     CONSTRAINT gestiones_pkey PRIMARY KEY (id),
@@ -432,6 +433,33 @@ CREATE TABLE IF NOT EXISTS public.admisiones
         REFERENCES public.gestiones (id),
     CONSTRAINT admisiones_carrera_asignada_id_foreign FOREIGN KEY (carrera_asignada_id)
         REFERENCES public.carreras (id)
+);
+
+-- Pago de la inscripción al CUP (CU-20). El postulante 'preinscrito' paga vía
+-- Stripe Checkout; el webhook confirma y lo promueve a 'inscrito'.
+-- stripe_session_id identifica la Checkout Session y es único (idempotencia).
+-- metodo deja la tabla agnóstica a la pasarela (stripe | qr | banco).
+CREATE TABLE IF NOT EXISTS public.pagos
+(
+    id bigserial NOT NULL,
+    postulante_id bigint NOT NULL,
+    gestion_id bigint NOT NULL,
+    monto numeric(10, 2) NOT NULL,
+    moneda character varying(3) NOT NULL DEFAULT 'BOB'::character varying,
+    metodo character varying(30) NOT NULL DEFAULT 'stripe'::character varying,
+    stripe_session_id character varying(255),
+    stripe_payment_intent_id character varying(255),
+    estado character varying(20) NOT NULL DEFAULT 'pendiente'::character varying,
+    fecha_pago timestamp(0) without time zone,
+    comprobante character varying(100),
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone,
+    CONSTRAINT pagos_pkey PRIMARY KEY (id),
+    CONSTRAINT pagos_stripe_session_id_unique UNIQUE (stripe_session_id),
+    CONSTRAINT pagos_postulante_id_foreign FOREIGN KEY (postulante_id)
+        REFERENCES public.postulantes (id) ON DELETE CASCADE,
+    CONSTRAINT pagos_gestion_id_foreign FOREIGN KEY (gestion_id)
+        REFERENCES public.gestiones (id)
 );
 
 END;

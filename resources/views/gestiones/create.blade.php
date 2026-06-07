@@ -43,6 +43,13 @@
   </select>
   @error('estado')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
 </div>
+<div style="margin-top:1rem">
+  <label class="fl">Costo de inscripción (Bs) <span class="rq">*</span></label>
+  <input type="number" name="costo_inscripcion" step="0.01" min="0"
+         class="fc @error('costo_inscripcion') is-invalid @enderror"
+         value="{{ old('costo_inscripcion','850.00') }}" required>
+  @error('costo_inscripcion')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+</div>
 <div style="display:flex;gap:.75rem;margin-top:1.5rem">
 <button type="submit" class="btn bp"><i class="fas fa-save"></i> Guardar</button>
 <a href="{{ route('gestiones.index') }}" class="btn bo2">Cancelar</a></div>

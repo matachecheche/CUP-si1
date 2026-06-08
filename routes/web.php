@@ -78,7 +78,8 @@ Route::middleware('auth')->group(function () {
 
     // Módulo 6: Panel Administrativo y Reportes (CU-11 grupos, CU-12 asignaciones, CU-16 a CU-18 admisión)
     // CU-11 · Gestionar grupos (la entidad grupo). Rutas literales ANTES del resource.
-    Route::post('grupos/generar-automatico', [GrupoController::class, 'generar'])->name('grupos.generar');
+    Route::get('grupos/generar', [GrupoController::class, 'mostrarGenerador'])->name('grupos.generar.form');
+    Route::post('grupos/generar', [GrupoController::class, 'generarAutomatico'])->name('grupos.generar');
     Route::get('grupos/{grupo}/estudiantes', [GrupoController::class, 'estudiantes'])->name('grupos.estudiantes');
     Route::post('grupos/{grupo}/inscribir', [GrupoController::class, 'inscribirPostulantes'])->name('grupos.inscribirPostulantes');
     Route::resource('grupos', GrupoController::class);

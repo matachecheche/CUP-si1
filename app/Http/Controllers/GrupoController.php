@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GenerarGruposRequest;
 use App\Http\Requests\StoreGrupoRequest;
 use App\Http\Requests\UpdateGrupoRequest;
 use App\Models\Gestion;
@@ -26,7 +27,7 @@ class GrupoController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('permission:ver grupos')->only('index', 'show', 'estudiantes');
-        $this->middleware('permission:crear grupos')->only('create', 'store', 'generar');
+        $this->middleware('permission:crear grupos')->only('create', 'store', 'mostrarGenerador', 'generarAutomatico');
         $this->middleware('permission:editar grupos')->only('edit', 'update', 'inscribirPostulantes');
         $this->middleware('permission:eliminar grupos')->only('destroy');
     }
@@ -63,26 +64,36 @@ class GrupoController extends Controller
         return redirect()->route('grupos.show', $grupo)->with('success', "Grupo «{$grupo->codigo}» creado.");
     }
 
-    /** CU-11: genera ⌈inscritos/capacidad⌉ grupos faltantes y distribuye estudiantes sin grupo. */
-    public function generar(GrupoService $svc)
+    /** CU-11: formulario previo a la generación (turno, capacidad, modalidad + preview en vivo). */
+    public function mostrarGenerador(Request $r, GrupoService $svc)
     {
-        $gestion = Gestion::where('estado', 'en_curso')->firstOrFail();
-        $total = $svc->totalInscritos($gestion);
+        $gestiones = Gestion::orderByDesc('fecha_inicio')->get();
+        $gestion = $r->filled('gestion_id')
+            ? Gestion::find($r->gestion_id)
+            : Gestion::where('estado', 'en_curso')->first();
+        $gestion = $gestion ?: $gestiones->first();
+        $totalInscritos = $gestion ? $svc->inscritosSinGrupo($gestion)->count() : 0;
 
-        if ($total === 0) {
-            return redirect()->route('grupos.index')
-                ->with('error', 'No hay postulantes inscritos en la gestión activa.');
+        return view('grupos.generar', compact('gestiones', 'gestion', 'totalInscritos'));
+    }
+
+    /** CU-11: crea ⌈inscritos/capacidad⌉ grupos del turno indicado y distribuye los inscritos. */
+    public function generarAutomatico(GenerarGruposRequest $r, GrupoService $svc)
+    {
+        $gestion = Gestion::findOrFail($r->gestion_id);
+        $res = $svc->generarGruposAutomaticos($gestion, (int) $r->capacidad, $r->turno, $r->modalidad);
+
+        if ($res['grupos_creados'] === 0) {
+            return back()->with('error', 'No hay inscritos sin grupo para esa gestión.')->withInput();
         }
 
-        $cap = GrupoService::CAPACIDAD_DEFAULT;
-        $necesarios = $svc->calcularCantidadGrupos($total, $cap);
-        $creados = $svc->generarGruposAutomaticos($gestion, $cap);
-        $this->registrarEnBitacora("Generó {$creados} grupo(s) automáticamente para {$gestion->descripcion}", null, 'Grupos');
+        $this->registrarEnBitacora(
+            "Generó {$res['grupos_creados']} grupo(s) turno {$r->turno} (capacidad {$r->capacidad}) — {$res['total_distribuido']} distribuidos",
+            null, 'Grupos'
+        );
 
         return redirect()->route('grupos.index')->with('success',
-            $creados > 0
-                ? "✔ Se generaron {$creados} grupo(s) (fórmula ⌈{$total}/{$cap}⌉ = {$necesarios}) y se distribuyeron los estudiantes sin grupo."
-                : "Ya existen los {$necesarios} grupo(s) necesarios para {$total} inscritos; se distribuyeron los estudiantes sin grupo."
+            "Se generaron {$res['grupos_creados']} grupo(s) del turno {$r->turno} (capacidad {$r->capacidad}); {$res['total_distribuido']} estudiantes distribuidos."
         );
     }
 

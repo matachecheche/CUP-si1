@@ -40,13 +40,7 @@
 @else
   <div style="margin-bottom:1.25rem;display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">
     @can('crear grupos')
-    <form action="{{ route('grupos.generar') }}" method="POST" style="display:inline">
-      @csrf
-      <button type="submit" class="btn bp"
-              onclick="return confirm('¿Generar los grupos necesarios automáticamente?\n\nFórmula: ⌈{{ $totalInscritos }} ÷ 70⌉ = {{ $gruposNecesarios }} grupo(s)')">
-        <i class="fas fa-magic"></i> CU-11: Generar grupos automáticamente
-      </button>
-    </form>
+    <a href="{{ route('grupos.generar.form') }}" class="btn bp"><i class="fas fa-magic"></i> CU-11: Generar grupos automáticamente</a>
     <a href="{{ route('grupos.create') }}" class="btn bo2"><i class="fas fa-plus"></i> Nuevo grupo</a>
     @endcan
     <a href="{{ route('asignaciones.index') }}" class="btn bo2"><i class="fas fa-user-tie"></i> CU-12: Asignar docentes</a>

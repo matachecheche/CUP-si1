@@ -87,6 +87,9 @@ class BitacoraMiddleware
         'pagos.exito' => ['Retornó de Stripe (pago exitoso)', 'Pagos'],
         'pagos.cancelado' => ['Canceló el pago en la pasarela', 'Pagos'],
         'reportes.index' => ['Accedió al módulo de reportes', 'Reportes'],
+        'consulta-voz.transcribir' => ['Transcribió audio del asistente de voz', 'Asistente IA'],
+        'consulta-voz.responder' => ['Realizó una consulta por voz/IA', 'Asistente IA'],
+        'consulta-voz.comandos' => ['Cargó los comandos del asistente de voz', 'Asistente IA'],
     ];
 
     public function handle(Request $request, Closure $next)

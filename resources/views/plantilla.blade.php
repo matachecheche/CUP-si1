@@ -6,6 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="Gestor de Ventas y Control de Planilla de sueldos" />
         <meta name="author" content="Grupo 3" />
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>Sistema ventas - @yield('title')</title>
         
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
@@ -24,8 +25,11 @@
                 <x-footer />
             </div>
         </div>
+        @auth
+            <x-asistente-voz />
+        @endauth
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="{{ asset('js/scripts.js') }}"></script>
-        @stack('js')        
+        @stack('js')
     </body>
 </html>

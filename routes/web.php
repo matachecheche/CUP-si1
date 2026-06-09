@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\BitacoraController;
 use App\Http\Controllers\CarreraController;
 use App\Http\Controllers\ComunicadoController;
+use App\Http\Controllers\ConsultaVozController;
 use App\Http\Controllers\CupoController;
 use App\Http\Controllers\DocenteController;
 use App\Http\Controllers\GestionController;
@@ -110,6 +111,14 @@ Route::middleware('auth')->group(function () {
 
     // ── CU-21: Comunicados ─────────────────────────────────────────────────
     Route::resource('comunicados', ComunicadoController::class)->except(['show']);
+
+    // ── Asistente de Consulta por Voz con IA (Whisper) ──────────────────────
+    Route::post('consulta-voz/transcribir', [ConsultaVozController::class, 'transcribir'])
+        ->middleware('throttle:20,1')->name('consulta-voz.transcribir');
+    Route::post('consulta-voz/responder', [ConsultaVozController::class, 'responder'])
+        ->middleware('throttle:30,1')->name('consulta-voz.responder');
+    Route::get('consulta-voz/comandos', [ConsultaVozController::class, 'comandos'])
+        ->name('consulta-voz.comandos');
 });
 
 // Bitácora: cierre de pestaña

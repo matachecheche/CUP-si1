@@ -38,4 +38,10 @@ return [
         'currency' => env('STRIPE_CURRENCY', 'bob'),
     ],
 
+    'openai' => [
+        'key' => env('OPENAI_API_KEY'),
+        'whisper_model' => env('OPENAI_WHISPER_MODEL', 'whisper-1'),
+        'chat_model' => env('OPENAI_CHAT_MODEL', 'gpt-4o-mini'),
+    ],
+
 ];
